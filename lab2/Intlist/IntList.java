@@ -110,7 +110,7 @@ public class IntList {
             pnc = pnc.rest;
             B = B.rest;
         }
-        return C;cd
+        return C;
     }
 
 
