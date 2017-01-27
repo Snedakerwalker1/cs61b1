@@ -83,3 +83,7 @@ public class Planet {
 		StdDraw.picture(this.xxPos, this.yyPos, "images/" + this.imgFileName);
 	}
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9ce249f301026a18bada1e81af3c32ff95c690e1
