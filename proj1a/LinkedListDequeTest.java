@@ -35,8 +35,6 @@ public class LinkedListDequeTest {
 	  * && is the "and" operation. */
 	public static void addIsEmptySizeTest() {
 		System.out.println("Running add/isEmpty/Size test.");
-		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
 		LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
 
 		boolean passed = checkEmpty(true, lld1.isEmpty());
@@ -55,10 +53,10 @@ public class LinkedListDequeTest {
 		passed = checkSize(3, lld1.size()) && passed;
 
 		System.out.println("Printing out deque: ");
-		lld1.printDeque();
+		/* lld1.printDeque(); */
 
 		printTestStatus(passed);
-		*/
+
 	}
 
 	/** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
@@ -66,8 +64,6 @@ public class LinkedListDequeTest {
 
 		System.out.println("Running add/remove test.");
 
-		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
 		LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
 		// should be empty 
 		boolean passed = checkEmpty(true, lld1.isEmpty());
@@ -81,12 +77,74 @@ public class LinkedListDequeTest {
 		passed = checkEmpty(true, lld1.isEmpty()) && passed;
 
 		printTestStatus(passed);
-		*/
+
 	}
+	/**
+	 Add's to both sides and removes from both sides to check that the system actually works!
+	 **/
+	public static void addRemovaddtest(){
+
+		System.out.println("Running add remove add test");
+		LinkedListDeque<String> strlist1 = new LinkedListDeque<>();
+		// adds to the front and back
+		strlist1.addFirst("hi");
+		strlist1.addLast("Computer");
+		// removes both items
+		strlist1.removeLast();
+		strlist1.removeLast();
+		boolean passed = checkEmpty(true, strlist1.isEmpty());
+		// adds to the list again
+		strlist1.addLast("bi");
+		strlist1.addLast("comp");
+		passed = (strlist1.removeFirst() == "bi") && passed;
+		printTestStatus(passed);
+	}
+	public static void indextest(){
+		System.out.println("running index test");
+		LinkedListDeque<Integer> intls = new LinkedListDeque<>();
+		intls.addFirst(2);
+		intls.addFirst(3);
+		boolean passed = (null == intls.get(3));
+		passed = (2 == intls.get(1)) && passed;
+		passed = (3 == intls.get(0)) && passed;
+		intls.addLast(5);
+		passed = passed && (5 == intls.getRecursive(2));
+		passed = (3 == intls.getRecursive(0)) && passed;
+		printTestStatus(passed);
+	}
+	public static void arraytest(){
+		System.out.println("Running array test");
+		ArrayDeque<Integer> intarr = new ArrayDeque();
+		boolean passed = (true == intarr.isEmpty());
+		intarr.addFirst(3);
+		intarr.addFirst(2);
+		intarr.addLast(4);
+		passed = passed && (intarr.get(2) == 4);
+		intarr.addLast(5);
+		intarr.addLast(6);
+		intarr.addLast(7);
+		intarr.addLast(0);
+		passed = passed && (intarr.get(6) == 0);
+		passed = passed && (intarr.size() == 7);
+		intarr.addFirst(1);
+		intarr.addFirst(0);
+		intarr.addLast(15);
+		intarr.addFirst(16);
+		passed = passed && (intarr.get(10) == 15);
+		intarr.removeFirst();
+		passed = passed && (intarr.get(10) == null);
+		intarr.removeLast();
+		passed = passed && (intarr.get(9) == null);
+		printTestStatus(passed);
+	}
+
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
 		addIsEmptySizeTest();
+		indextest();
 		addRemoveTest();
+		addRemovaddtest();
+		arraytest();
 	}
 } 
