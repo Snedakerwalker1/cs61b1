@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
 	
@@ -82,8 +84,7 @@ public class LinkedListDequeTest {
 	/**
 	 Add's to both sides and removes from both sides to check that the system actually works!
 	 **/
-	public static void addRemovaddtest(){
-
+	public static void addRemovaddtest() {
 		System.out.println("Running add remove add test");
 		LinkedListDeque<String> strlist1 = new LinkedListDeque<>();
 		// adds to the front and back
@@ -99,7 +100,7 @@ public class LinkedListDequeTest {
 		passed = (strlist1.removeFirst() == "bi") && passed;
 		printTestStatus(passed);
 	}
-	public static void indextest(){
+	public static void indextest() {
 		System.out.println("running index test");
 		LinkedListDeque<Integer> intls = new LinkedListDeque<>();
 		intls.addFirst(2);
@@ -112,9 +113,20 @@ public class LinkedListDequeTest {
 		passed = (3 == intls.getRecursive(0)) && passed;
 		printTestStatus(passed);
 	}
-	public static void arraytest(){
+	public static void removeempty() {
+		System.out.println("Running remove empty test");
+		LinkedListDeque<Integer> intls = new LinkedListDeque<>();
+		boolean passed = (null == intls.removeLast());
+		passed = (null == intls.removeFirst()) && passed;
+		intls.addFirst(2);
+		intls.removeFirst();
+		passed = (null == intls.removeFirst()) && passed;
+		printTestStatus(passed);
+
+	}
+	public static void arraytest() {
 		System.out.println("Running array test");
-		ArrayDeque<Integer> intarr = new ArrayDeque();
+		ArrayDeque<Integer> intarr = new ArrayDeque<>();
 		boolean passed = (true == intarr.isEmpty());
 		intarr.addFirst(3);
 		intarr.addFirst(2);
@@ -138,6 +150,50 @@ public class LinkedListDequeTest {
 		printTestStatus(passed);
 	}
 
+	public static void difftypetest() {
+		ArrayDeque<String> strarr = new ArrayDeque<>();
+		ArrayDeque<Double> darr = new ArrayDeque<>();
+		strarr.addFirst("hi");
+		darr.addLast(2.1);
+		strarr.printDeque();
+		darr.printDeque();
+	}
+	public static void firsttest() {
+		ArrayDeque<Integer> intarr = new ArrayDeque<>();
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+		intarr.addLast(0);
+	}
+	public static void addfornt() {
+		ArrayDeque<Double> darr = new ArrayDeque<>();
+		int count = 0;
+		while (count < 20){
+			darr.addFirst(3.14);
+			count += 1;
+		}
+		while (count > 3){
+			darr.removeFirst();
+			count -= 1;
+		}
+		while (count < 9){
+			darr.addFirst(3.14);
+			count += 1;
+		}
+		darr.printDeque();
+
+	}
+
+	public static void addremove() {
+		ArrayDeque<String> strarr = new ArrayDeque<>();
+		strarr.addLast("hi");
+		System.out.println(strarr.removeFirst());
+	}
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
@@ -145,6 +201,11 @@ public class LinkedListDequeTest {
 		indextest();
 		addRemoveTest();
 		addRemovaddtest();
+		removeempty();
 		arraytest();
+		difftypetest();
+		firsttest();
+		addremove();
+		addfornt();
 	}
 } 

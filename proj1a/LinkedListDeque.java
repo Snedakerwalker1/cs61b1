@@ -7,7 +7,7 @@ import java.awt.event.ItemEvent;
  * Created by wsnedaker on 1/29/2017.
  */
 public class LinkedListDeque<Item> {
-    public class LinkedList{
+    private class LinkedList {
         public Item first;
         public LinkedList next;
         public LinkedList prev;
@@ -15,33 +15,30 @@ public class LinkedListDeque<Item> {
         public LinkedList(Item item){
             this.first = item;
         }
-        public LinkedList(LinkedList prev, Item item, LinkedList next){
+        public LinkedList(LinkedList prev, Item item, LinkedList next) {
             this.next = next;
             this.first = item;
             this.prev = prev;
-
         }
-        public Item getLinked(int index){
-            if (index == 0){
+        public Item getLinked(int index) {
+            if (index == 0) {
                 return this.first;
             }
             return this.next.getLinked(index-1);
-
         }
-
     }
     private int size;
     private LinkedList sentinal;
     private boolean empty = true;
 
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         size = 0;
         sentinal = new LinkedList(null);
-}
+    }
     /*
     Adds an item to the front of the List
     */
-    public void addFirst(Item item){
+    public void addFirst(Item item) {
         empty = false;
         if (sentinal.next == null || sentinal.next.first == null){
             sentinal.next = new LinkedList(sentinal, item, sentinal);
@@ -56,9 +53,9 @@ public class LinkedListDeque<Item> {
     /*
     Adds an item to the end of the list
     */
-    public void addLast(Item item){
+    public void addLast(Item item) {
         empty = false;
-        if (sentinal.prev == null ){
+        if (sentinal.prev == null ) {
             sentinal.prev = new LinkedList(sentinal, item, sentinal);
             sentinal.next = sentinal.prev;
             size += 1;
@@ -71,8 +68,8 @@ public class LinkedListDeque<Item> {
     /*
     Checks to see if the list is empty
     */
-    public boolean isEmpty(){
-        if (empty){
+    public boolean isEmpty() {
+        if (empty) {
             return empty;
         }else {
             return sentinal.next.first == null;
@@ -81,14 +78,14 @@ public class LinkedListDeque<Item> {
     /*
     Returns the size of the list
      */
-    public int size(){
+    public int size() {
         return size;
     }
     /*
     Prints the items in the list separated by a space
     */
-    public void printDeque(){
-        if (empty == false){
+    public void printDeque() {
+        if (empty == false) {
             LinkedList pntr = sentinal.next;
             while (pntr.first != null) {
                 System.out.print(pntr.first + " ");
@@ -97,21 +94,12 @@ public class LinkedListDeque<Item> {
         }
     }
     /*
-    Prints backwords for testing.
-     */
-    public void printBDeque(){
-        if (empty == false) {
-            LinkedList pntr = sentinal.prev;
-            while (pntr.first != null) {
-                System.out.print(pntr.first + " ");
-                pntr = pntr.prev;
-            }
-        }
-    }
-    /*
     Removes the first item from the list.
     */
     public Item removeFirst(){
+        if (isEmpty()){
+            return null;
+        }
         LinkedList pntr = sentinal.next;
         Item first = pntr.first;
         pntr.next.prev = pntr.prev;
@@ -123,7 +111,10 @@ public class LinkedListDeque<Item> {
     /*
     Removes the last item in the list and returns it.
      */
-    public Item removeLast(){
+    public Item removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         LinkedList pntr = sentinal.prev;
         Item first = pntr.first;
         pntr.next.prev = pntr.prev;
@@ -136,11 +127,11 @@ public class LinkedListDeque<Item> {
     Returns the item from the defined index, \
     and if no such item exists returns null
      */
-    public Item get(int index){
-        if (index > size){
+    public Item get(int index) {
+        if (index > size) {
             return null;
         }
-        if (index < 0){
+        if (index < 0) {
             return null;
         }else {
             LinkedList pntr = sentinal.next;
@@ -157,7 +148,7 @@ public class LinkedListDeque<Item> {
     Uses recursion not iteration to get an item at some index,
     and if said index doesn't exist retunrs null.
      */
-    public Item getRecursive(int index){
+    public Item getRecursive(int index) {
         LinkedList pntr = sentinal.next;
         if (index >= size){
             return null;
