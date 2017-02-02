@@ -25,13 +25,19 @@ public class ArrayDeque<Item> {
      */
     private void resize(int length) {
         Item[] newer = (Item []) new Object[length];
-        if (last <= first || last < items.length / 2 || first > items.length /  2) {
+        if (first == items.length - 1) {
+            System.arraycopy(items, 0, newer, length/8, size);
+            items = newer;
+            first = length / 8 - 1;
+            last = length / 8 + size;
+        } else if (last <= first || last < items.length / 2 || first > items.length /  2) {
             System.arraycopy(items, first + 1, newer, length / 8, size - first);
             System.arraycopy(items, 0, newer, length / 8 + size - first, first);
             items = newer;
             first = length / 8 - 1;
             last = length / 8 + size;
-        } else {
+        }
+        else {
             System.arraycopy(items, first + 1, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;

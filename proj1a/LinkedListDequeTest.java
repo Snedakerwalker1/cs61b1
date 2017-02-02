@@ -194,7 +194,32 @@ public class LinkedListDequeTest {
 		strarr.addLast("hi");
 		System.out.println(strarr.removeFirst());
 	}
-
+	public static void gettest() {
+		ArrayDeque<Integer> intarr = new ArrayDeque<>();
+		intarr.addLast(0);
+		intarr.addLast(1);
+		intarr.addFirst(2);
+		intarr.addFirst(3);
+		intarr.addLast(4);
+		intarr.addLast(5);
+		intarr.addLast(6);
+		boolean passed = (intarr.get(3) == 1);
+		passed = passed && (intarr.get(0) == 3);
+		intarr.addFirst(9);
+		intarr.removeLast();
+		intarr.addFirst(11);
+		intarr.addLast(12);
+		intarr.removeFirst();
+		passed = passed && (intarr.get(6) == 5);
+		passed = passed && (intarr.get(4) == 1);
+		intarr.addFirst(16);
+		intarr.addFirst(17);
+		intarr.removeLast();
+		passed = passed && (intarr.get(0) == 17);
+		passed = passed && (intarr.get(0) == 17);
+		intarr.removeLast();
+		printTestStatus(passed);
+	}
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
 		addIsEmptySizeTest();
@@ -207,5 +232,6 @@ public class LinkedListDequeTest {
 		firsttest();
 		addremove();
 		addfornt();
+		gettest();
 	}
 } 
