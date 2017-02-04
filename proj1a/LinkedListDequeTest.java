@@ -289,6 +289,7 @@ public class LinkedListDequeTest {
 		ArrayDeque<String> stra = new ArrayDeque<>();
 		stra.addLast("mine");
 		stra.addLast("mine");
+		stra.addLast("mine");
 		stra.addFirst("mine");
 		stra.addFirst("mine");
 		stra.addFirst("mine");
@@ -313,16 +314,42 @@ public class LinkedListDequeTest {
 		}
 		printTestStatus(passed);
 	}
+	public static void weitest() {
+		ArrayDeque<Integer> intarr = new ArrayDeque<>();
+		boolean passed = true;
+		intarr.addFirst(0);
+		passed = passed && (intarr.removeLast() == 0);
+		intarr.addLast(2);
+		intarr.addFirst(3);
+		intarr.addLast(4);
+		passed = passed && (intarr.removeLast() == 4);
+		intarr.addFirst(6);
+		intarr.addFirst(7);
+		intarr.addFirst(8);
+		intarr.addFirst(9);
+		intarr.addFirst(10);
+		intarr.addLast(11);
+		passed = passed && (intarr.removeFirst() == 10);
+		passed = passed && (intarr.removeFirst() == 9);
+		passed = passed && (intarr.get(3) == 3);
+		intarr.addFirst(15);
+		passed = passed && (intarr.removeLast() == 11);
+		passed = passed && (intarr.removeFirst() == 15);
+		passed = passed && (intarr.removeFirst() == 8);
+		passed = passed && (intarr.removeFirst() == 7);
+		passed = passed && (intarr.removeFirst() == 6);
+		passed = passed && (intarr.removeLast() == 2);
+		printTestStatus(passed);
+	}
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
-		/* gettes();
-		addI
-		sEmptySizeTest();
+		gettes();
+		addIsEmptySizeTest();
 		indextest();
 		addRemoveTest();
 		addRemovaddtest();
-		removeempty(); **/
+		removeempty();
 		arraytest();
 		difftypetest();
 		firsttest();
@@ -333,6 +360,7 @@ public class LinkedListDequeTest {
 		addlast();
 		lasttest();
 		finaltest();
+		weitest();
 
 	}
 
