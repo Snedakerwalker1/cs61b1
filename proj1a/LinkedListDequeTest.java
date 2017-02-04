@@ -241,7 +241,7 @@ public class LinkedListDequeTest {
 		arrayDeque.removeLast();
 		arrayDeque.removeLast();
 	}
-	public static void gettes(){
+	public static void gettes() {
 		ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
 		arrayDeque.addFirst(0);
 		arrayDeque.addLast(1);
@@ -263,6 +263,21 @@ public class LinkedListDequeTest {
 		arrayDeque.removeFirst();
 		arrayDeque.removeLast();
 	}
+	public static void addlast(){
+		int count = 0;
+		ArrayDeque<Integer> intlst = new ArrayDeque<>();
+		boolean passed = true;
+		while (count < 100){
+			intlst.addLast(count);
+			count += 1;
+		}
+		while (count > 1){
+			count -= 1;
+			passed = passed && (intlst.removeLast() == count);
+		}
+		printTestStatus(passed);
+
+	}
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
@@ -279,6 +294,7 @@ public class LinkedListDequeTest {
 		addfornt();
 		gettest();
 		randomtest();
+		addlast();
 
 	}
 
