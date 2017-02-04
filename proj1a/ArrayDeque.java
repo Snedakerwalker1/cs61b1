@@ -26,18 +26,18 @@ public class ArrayDeque<Item> {
     private void resize(int length) {
         Item[] newer = (Item []) new Object[length];
         if (first == items.length - 1) {
-            System.arraycopy(items, 0, newer, length / 4, size);
+            System.arraycopy(items, 0, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
-            last = first + size + 1;
-        } else if (last <= first || last < items.length / 2 || first > items.length / 2) {
-            System.arraycopy(items, first + 1, newer, length / 4, size - first);
-            System.arraycopy(items, 0, newer, length / 4 + size - first, first);
+            last = first + size + 1 ;
+        } else if (last <= first || last < items.length/4 || first > items.length/4) {
+            System.arraycopy(items, first + 1, newer, length / 8, size - first);
+            System.arraycopy(items, 0, newer, length / 8 + size - first, first);
             items = newer;
             first = length / 8 - 1;
             last = length / 8 + size;
         } else {
-            System.arraycopy(items, first + 1, newer, length / 4, size);
+            System.arraycopy(items, first + 1, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
             last = length / 8 + size;
@@ -49,7 +49,7 @@ public class ArrayDeque<Item> {
     public void addFirst(Item item) {
         if (size + 1 == items.length) {
             // update the size of t he list
-            resize((1 + size) * 2);
+            resize((1 + size)* 2);
             items[first] = item;
             if (first == 0) {
                 first = items.length - 1;
@@ -75,7 +75,7 @@ public class ArrayDeque<Item> {
     public void addLast(Item item) {
         if (size + 1 == items.length) {
             // update the size of the list then add
-            resize(2 * (size + 1));
+            resize(2* (size + 1));
             items[last] = item;
             if (last == items.length - 1) {
                 last = 0;
@@ -138,8 +138,8 @@ public class ArrayDeque<Item> {
             Item item = items[first];
             items[first] = null;
             size -= 1;
-            if (items.length > 8 && size * 4 < items.length) {
-                resize(size / 2);
+            if (size > 8 && size * 4 < items.length) {
+                resize(items.length / 2);
             }
             return item;
         } else {
@@ -147,8 +147,8 @@ public class ArrayDeque<Item> {
             Item item = items[first];
             items[first] = null;
             size -= 1;
-            if (items.length > 8 && size * 4 < items.length) {
-                resize(size / 2);
+            if (size > 8 && size * 4 < items.length) {
+                resize(items.length / 2);
             }
             return item;
         }
@@ -162,8 +162,8 @@ public class ArrayDeque<Item> {
             Item item = items[last];
             items[last] = null;
             size -= 1;
-            if (items.length > 8 && size * 4 < items.length) {
-                resize(size / 2);
+            if (size > 8 && size * 4 < items.length) {
+                resize(items.length / 2);
             }
             return item;
         } else {
@@ -171,7 +171,7 @@ public class ArrayDeque<Item> {
             Item item = items[last];
             items[last] = null;
             if (items.length > 8 && size * 4 < items.length) {
-                resize(size / 2);
+                resize(items.length / 2);
             }
             size -= 1;
             return item;
