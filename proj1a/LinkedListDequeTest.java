@@ -263,26 +263,62 @@ public class LinkedListDequeTest {
 		arrayDeque.removeFirst();
 		arrayDeque.removeLast();
 	}
-	public static void addlast(){
+	public static void addlast() {
 		int count = 0;
 		ArrayDeque<Integer> intlst = new ArrayDeque<>();
 		boolean passed = true;
-		while (count < 100){
+		while (count < 100) {
 			intlst.addLast(count);
 			count += 1;
 		}
-		while (count > 1){
+		while (count > 1) {
+			count -= 1;
+			passed = passed && (intlst.removeLast() == count);
+		}
+		while (count < 100) {
+			intlst.addLast(count);
+			count += 1;
+		}
+		while (count > 1) {
 			count -= 1;
 			passed = passed && (intlst.removeLast() == count);
 		}
 		printTestStatus(passed);
-
+	}
+	public static void lasttest() {
+		ArrayDeque<String> stra = new ArrayDeque<>();
+		stra.addLast("mine");
+		stra.addLast("mine");
+		stra.addFirst("mine");
+		stra.addFirst("mine");
+		stra.addFirst("mine");
+		stra.addFirst("mine");
+		stra.addFirst("mine");
+		stra.addFirst("mine");
+		stra.removeLast();
+	}
+	public static void finaltest() {
+		ArrayDeque<Integer> intarr = new ArrayDeque<>();
+		int count = 0;
+		int rev = 0;
+		boolean passed = true;
+		while (count < 11) {
+			intarr.addFirst(count);
+			count += 1;
+		}
+		while (count > 0) {
+			count -= 1;
+			passed = passed && (intarr.removeLast() == rev);
+			rev += 1;
+		}
+		printTestStatus(passed);
 	}
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
 		/* gettes();
-		addIsEmptySizeTest();
+		addI
+		sEmptySizeTest();
 		indextest();
 		addRemoveTest();
 		addRemovaddtest();
@@ -295,6 +331,8 @@ public class LinkedListDequeTest {
 		gettest();
 		randomtest();
 		addlast();
+		lasttest();
+		finaltest();
 
 	}
 

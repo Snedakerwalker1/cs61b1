@@ -43,6 +43,26 @@ public class ArrayDeque<Item> {
             last = length / 4 + size - 1;
         }
     }
+    private void smaller(int length) {
+        Item[] newer = (Item []) new Object[length];
+        if (first == items.length - 1) {
+            System.arraycopy(items, 0, newer, length / 4, size);
+            items = newer;
+            first = length / 4 - 1;
+            last = first + size;
+        } else if (last <= first) {
+            System.arraycopy(items, first + 1, newer, length / 4, size - first);
+            System.arraycopy(items, 0, newer, length / 4 + size - first, first);
+            items = newer;
+            first = length / 4 - 1;
+            last = length / 4 + size;
+        } else {
+            System.arraycopy(items, first + 1, newer, length / 4, size);
+            items = newer;
+            first = length / 4 - 1;
+            last = length / 4 + size - 1;
+        }
+    }
     /*
     Adds an iem at the front of the list
      */
@@ -139,7 +159,7 @@ public class ArrayDeque<Item> {
             items[first] = null;
             size -= 1;
             if (items.length > 8 && size * 4 < items.length) {
-                resize(items.length / 2);
+                smaller(items.length / 2);
             }
             return item;
         } else {
@@ -148,7 +168,7 @@ public class ArrayDeque<Item> {
             items[first] = null;
             size -= 1;
             if (items.length > 8 && size * 4 < items.length) {
-                resize(items.length / 2);
+                smaller(items.length / 2);
             }
             return item;
         }
@@ -163,7 +183,7 @@ public class ArrayDeque<Item> {
             items[last] = null;
             size -= 1;
             if (items.length > 8 && size * 4 < items.length) {
-                resize(items.length / 2);
+                smaller(items.length / 2);
             }
             return item;
         } else {
@@ -171,7 +191,7 @@ public class ArrayDeque<Item> {
             Item item = items[last];
             items[last] = null;
             if (items.length > 8 && size * 4 < items.length) {
-                resize(items.length / 2);
+                smaller(items.length / 2);
             }
             size -= 1;
             return item;
