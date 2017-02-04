@@ -241,9 +241,32 @@ public class LinkedListDequeTest {
 		arrayDeque.removeLast();
 		arrayDeque.removeLast();
 	}
+	public static void gettes(){
+		ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+		arrayDeque.addFirst(0);
+		arrayDeque.addLast(1);
+		arrayDeque.addFirst(2);
+		arrayDeque.removeFirst();
+		arrayDeque.addFirst(4);
+		arrayDeque.addFirst(5);
+		arrayDeque.get(2);
+		arrayDeque.addFirst(7);
+		arrayDeque.addLast(8);
+		arrayDeque.removeLast();
+		arrayDeque.addLast(10);
+		arrayDeque.removeFirst();
+		arrayDeque.addFirst(12);
+		arrayDeque.addLast(13);
+		arrayDeque.addFirst(14);
+		arrayDeque.removeFirst();
+		arrayDeque.addFirst(16);
+		arrayDeque.removeFirst();
+		arrayDeque.removeLast();
+	}
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
+		gettes();
 		addIsEmptySizeTest();
 		indextest();
 		addRemoveTest();
@@ -256,6 +279,7 @@ public class LinkedListDequeTest {
 		addfornt();
 		gettest();
 		randomtest();
+
 	}
 
 }
