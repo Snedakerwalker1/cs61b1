@@ -1,21 +1,16 @@
-import sun.awt.image.ImageWatched;
-import sun.font.TrueTypeFont;
-
-import java.awt.event.ItemEvent;
-
 /**
  * Created by wsnedaker on 1/29/2017.
  */
 public class LinkedListDeque<Item> {
     private class LinkedList {
-        public Item first;
-        public LinkedList next;
-        public LinkedList prev;
+        private Item first;
+        private LinkedList next;
+        private LinkedList prev;
 
-        public LinkedList(Item item){
+        LinkedList(Item item) {
             this.first = item;
         }
-        public LinkedList(LinkedList prev, Item item, LinkedList next) {
+        LinkedList(LinkedList prev, Item item, LinkedList next) {
             this.next = next;
             this.first = item;
             this.prev = prev;
@@ -24,7 +19,7 @@ public class LinkedListDeque<Item> {
             if (index == 0) {
                 return this.first;
             }
-            return this.next.getLinked(index-1);
+            return this.next.getLinked(index - 1);
         }
     }
     private int size;
@@ -40,7 +35,7 @@ public class LinkedListDeque<Item> {
     */
     public void addFirst(Item item) {
         empty = false;
-        if (sentinal.next == null || sentinal.next.first == null){
+        if (sentinal.next == null || sentinal.next.first == null) {
             sentinal.next = new LinkedList(sentinal, item, sentinal);
             sentinal.prev = sentinal.next;
             size += 1;
@@ -55,7 +50,7 @@ public class LinkedListDeque<Item> {
     */
     public void addLast(Item item) {
         empty = false;
-        if (sentinal.prev == null ) {
+        if (sentinal.prev == null) {
             sentinal.prev = new LinkedList(sentinal, item, sentinal);
             sentinal.next = sentinal.prev;
             size += 1;
@@ -71,7 +66,7 @@ public class LinkedListDeque<Item> {
     public boolean isEmpty() {
         if (empty) {
             return empty;
-        }else {
+        } else {
             return sentinal.next.first == null;
         }
     }
@@ -85,7 +80,7 @@ public class LinkedListDeque<Item> {
     Prints the items in the list separated by a space
     */
     public void printDeque() {
-        if (empty == false) {
+        if (!empty) {
             LinkedList pntr = sentinal.next;
             while (pntr.first != null) {
                 System.out.print(pntr.first + " ");
@@ -96,8 +91,8 @@ public class LinkedListDeque<Item> {
     /*
     Removes the first item from the list.
     */
-    public Item removeFirst(){
-        if (isEmpty()){
+    public Item removeFirst() {
+        if (isEmpty()) {
             return null;
         }
         LinkedList pntr = sentinal.next;
@@ -133,7 +128,7 @@ public class LinkedListDeque<Item> {
         }
         if (index < 0) {
             return null;
-        }else {
+        } else {
             LinkedList pntr = sentinal.next;
             int count = 0;
             while (count != index) {
@@ -150,7 +145,7 @@ public class LinkedListDeque<Item> {
      */
     public Item getRecursive(int index) {
         LinkedList pntr = sentinal.next;
-        if (index >= size){
+        if (index >= size) {
             return null;
         }
         return pntr.getLinked(index);

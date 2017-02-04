@@ -26,18 +26,17 @@ public class ArrayDeque<Item> {
     private void resize(int length) {
         Item[] newer = (Item []) new Object[length];
         if (first == items.length - 1) {
-            System.arraycopy(items, 0, newer, length/8, size);
+            System.arraycopy(items, 0, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
-            last = length / 8 + size;
+            last = length / 8 + size - 1;
         } else if (last <= first || last < items.length / 2 || first > items.length /  2) {
             System.arraycopy(items, first + 1, newer, length / 8, size - first);
             System.arraycopy(items, 0, newer, length / 8 + size - first, first);
             items = newer;
             first = length / 8 - 1;
             last = length / 8 + size;
-        }
-        else {
+        } else {
             System.arraycopy(items, first + 1, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
@@ -59,7 +58,8 @@ public class ArrayDeque<Item> {
             }
             size += 1;
         } else if (first == 0) {
-            // Since we are now at the beginning of the list we must wrap the pointer around to the other side
+            // Since we are now at the beginning of the list we
+            // must wrap the pointer around to the other side
             items[first] = item;
             size += 1;
             first = items.length - 1;
@@ -84,7 +84,8 @@ public class ArrayDeque<Item> {
             }
             size += 1;
         } else if (last == items.length - 1) {
-            // Since we are now at the end of the list we must wrap the pointer around to the other side
+            // Since we are now at the end of the list we
+            // must wrap the pointer around to the other side
             items[last] = item;
             size += 1;
             last = 0;
@@ -107,23 +108,23 @@ public class ArrayDeque<Item> {
         return size;
     }
     /*
-    Prints the items in the list separated by a space
+    Prssints the items in the list separated by a space
      */
     public void printDeque() {
         int count = 0;
-        if ( last <= first || size == items.length) {
+        if (last <= first || size == items.length) {
             int index = 0;
             while (count < items.length - first - 1) {
-                System.out.print( items[first + 1 + count] + " ");
+                System.out.print(items[first + 1 + count] + " ");
                 count += 1;
             }
             while (index < last) {
-                System.out.print( items[index] + " ");
+                System.out.print(items[index] + " ");
                 index += 1;
             }
-        } else{
+        } else {
             while (count < size) {
-                System.out.print( items[first + 1 + count] + " ");
+                System.out.print(items[first + 1 + count] + " ");
                 count += 1;
             }
         }
@@ -142,14 +143,14 @@ public class ArrayDeque<Item> {
             }
             return item;
         } else {
-        first += 1;
-        Item item = items[first];
-        items[first] = null;
-        size -= 1;
-        if (size > 8 && size + size / 4 < items.length) {
-            resize(size + size / 4);
-        }
-        return item;
+            first += 1;
+            Item item = items[first];
+            items[first] = null;
+            size -= 1;
+            if (size > 8 && size + size / 4 < items.length) {
+                resize(size + size / 4);
+            }
+            return item;
         }
     }
     /*
@@ -165,7 +166,7 @@ public class ArrayDeque<Item> {
                 resize(size + size / 4);
             }
             return item;
-        }else {
+        } else {
             last -= 1;
             Item item = items[last];
             items[last] = null;
@@ -180,24 +181,21 @@ public class ArrayDeque<Item> {
     Returns the item from the specified index,
     if no such item exists this returns null
      */
-    public Item get(int Index) {
+    public Item get(int index) {
         int count = 0;
-        int index = 0;
+        int ind = 0;
         while (first + 1 + count < items.length) {
-            if (count == Index) {
+            if (count == index) {
                 return items[first + 1 + count];
             }
             count += 1;
         }
         while (index < last) {
-            if (index + count == Index) {
-                return items[index];
-            } index += 1;
+            if (ind + count == index) {
+                return items[ind];
+            }
+            ind += 1;
         }
         return null;
     }
-
-
-
-
 }
