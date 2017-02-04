@@ -35,12 +35,12 @@ public class ArrayDeque<Item> {
             System.arraycopy(items, 0, newer, length / 8 + size - first, first);
             items = newer;
             first = length / 8 - 1;
-            last = length / 8 + size;
+            last = length / 8 + size- 1;
         } else {
             System.arraycopy(items, first + 1, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
-            last = length / 8 + size;
+            last = length / 8 + size- 1;
         }
     }
     /*
