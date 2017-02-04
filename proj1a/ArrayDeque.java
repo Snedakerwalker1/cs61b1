@@ -29,18 +29,18 @@ public class ArrayDeque<Item> {
             System.arraycopy(items, 0, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
-            last = length / 8 + size - 1;
-        } else if (last <= first || last < items.length / 2 || first > items.length /  2) {
+            last = first + size ;
+        } else if (last <= first || last < items.length/4 || first > items.length/4) {
             System.arraycopy(items, first + 1, newer, length / 8, size - first);
             System.arraycopy(items, 0, newer, length / 8 + size - first, first);
             items = newer;
             first = length / 8 - 1;
-            last = length / 8 + size- 1;
+            last = length / 8 + size;
         } else {
             System.arraycopy(items, first + 1, newer, length / 8, size);
             items = newer;
             first = length / 8 - 1;
-            last = length / 8 + size- 1;
+            last = length / 8 + size;
         }
     }
     /*
@@ -190,7 +190,7 @@ public class ArrayDeque<Item> {
             }
             count += 1;
         }
-        while (index < last) {
+        while (ind < last) {
             if (ind + count == index) {
                 return items[ind];
             }
