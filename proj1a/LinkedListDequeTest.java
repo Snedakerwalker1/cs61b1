@@ -266,12 +266,12 @@ public class LinkedListDequeTest {
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
-		gettes();
+		/* gettes();
 		addIsEmptySizeTest();
 		indextest();
 		addRemoveTest();
 		addRemovaddtest();
-		removeempty();
+		removeempty(); **/
 		arraytest();
 		difftypetest();
 		firsttest();

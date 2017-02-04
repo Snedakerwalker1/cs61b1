@@ -26,21 +26,21 @@ public class ArrayDeque<Item> {
     private void resize(int length) {
         Item[] newer = (Item []) new Object[length];
         if (first == items.length - 1) {
-            System.arraycopy(items, 0, newer, length / 8, size);
+            System.arraycopy(items, 0, newer, length / 4, size);
             items = newer;
-            first = length / 8 - 1;
+            first = length / 4 - 1;
             last = first + size + 1 ;
-        } else if (last <= first || last < items.length/4 || first > items.length/4) {
-            System.arraycopy(items, first + 1, newer, length / 8, size - first);
-            System.arraycopy(items, 0, newer, length / 8 + size - first, first);
+        } else if (last <= first) {
+            System.arraycopy(items, first + 1, newer, length / 4, size - first);
+            System.arraycopy(items, 0, newer, length / 4 + size - first, first);
             items = newer;
-            first = length / 8 - 1;
-            last = length / 8 + size;
+            first = length / 4 - 1;
+            last = length / 4 + size;
         } else {
-            System.arraycopy(items, first + 1, newer, length / 8, size);
+            System.arraycopy(items, first + 1, newer, length / 4, size);
             items = newer;
-            first = length / 8 - 1;
-            last = length / 8 + size;
+            first = length / 4 - 1;
+            last = length / 4 + size;
         }
     }
     /*
@@ -138,7 +138,7 @@ public class ArrayDeque<Item> {
             Item item = items[first];
             items[first] = null;
             size -= 1;
-            if (size > 8 && size * 4 < items.length) {
+            if (items.length > 8 && size * 4 < items.length) {
                 resize(items.length / 2);
             }
             return item;
@@ -147,7 +147,7 @@ public class ArrayDeque<Item> {
             Item item = items[first];
             items[first] = null;
             size -= 1;
-            if (size > 8 && size * 4 < items.length) {
+            if (items.length > 8 && size * 4 < items.length) {
                 resize(items.length / 2);
             }
             return item;
@@ -162,7 +162,7 @@ public class ArrayDeque<Item> {
             Item item = items[last];
             items[last] = null;
             size -= 1;
-            if (size > 8 && size * 4 < items.length) {
+            if (items.length > 8 && size * 4 < items.length) {
                 resize(items.length / 2);
             }
             return item;
