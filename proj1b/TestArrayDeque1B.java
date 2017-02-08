@@ -12,7 +12,7 @@ public class TestArrayDeque1B {
         ArrayDequeSolution<Integer> soluarr = new ArrayDequeSolution<>();
         String messege = " ";
         // main idea taken from StudentArrayDeque launcher
-        for (int i = 0; i < 200; i += 1) {
+        for (int i = 0; i < 500; i += 1) {
             double randomint = StdRandom.uniform();
             if (randomint < .25) {
                 studarr.addFirst(i);
