@@ -4,23 +4,24 @@ ArrayDeque:
 
 Q: Give an example of at least one idea from the staff solution that would have made your solution better (if any).
 
-A: 
+A: Their use of helper functions was great and I think could have greatly improved my code.
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A:I was very prod that I was able to easily create the circular system.
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: The looping around that created the linked structure was somewhat inelegant.
 
 Q: What do you wish you would have known before writing ArrayDeque, if anything?
 
-A:
+A: I wish i had known the small super horrible error that i had that took hours to find before i had coded to make sure
+that i didn't make that typo.
 
 Q: If you wrote ArrayDeque again, what would you do differently, if anything?
 
-A:
+A:I would have a loop helper function.
 
 -----
 
@@ -28,23 +29,23 @@ LinkedListDeque:
 
 Q: Give an example of at least one idea from the staff solution that would have made your solution better (if any).
 
-A: 
+A: My solution was pretty good and didn't need much addition
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A:I felt proud that i was able to completely solve all of the problems involving this code with just my tests.
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A:I was a little sad that I never did really figure out a good way to get() negative indexes.
 
 Q: What do you wish you would have known before writing ArrayDeque, if anything?
 
-A:
+A: I wish i had known how to use the visualizer included in the cs61b add on.
 
 Q: If you wrote LinkedListDeque again, what would you do differently, if anything?
 
-A:
+A: I would figure out a way to do a negative index such that get(-1) would have a meaningful value.
 
 -----
 
@@ -52,4 +53,4 @@ Meta:
 
 Q: This is the first time we've tried something like this. Did you like this design review process? Anything we should do differently next time?
 
-A: 
+A: I like it allot i think an email about it should be sent out to remind people to go to labs for the process.
