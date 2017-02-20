@@ -1,9 +1,7 @@
-// TODO: Make sure to make this class a part of the synthesizer package
+
 package synthesizer;
 import java.util.Iterator;
 
-//TODO: Make sure to make this class and all of its methods public
-//TODO: Make sure to make this class extend AbstractBoundedQueue<t>
 public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;            // index for the next dequeue or peek
@@ -16,7 +14,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * Create a new ArrayRingBuffer with the given capacity.
      */
     public ArrayRingBuffer(int capacity) {
-        // TODO: Create new array with capacity elements.
+
         this.first = 0;
         this.last = 0;
         this.fillCount = 0;
@@ -34,8 +32,8 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * covered Monday.
      */
     public void enqueue(T x) {
-        // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
-        if (this.capacity() == this.fillCount()) {
+
+        if (this.isFull()) {
             throw new RuntimeException("Ring Buffer Overflow");
         }
         this.rb[last] = x;
@@ -52,11 +50,12 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * covered Monday.
      */
     public T dequeue() {
-        // TODO: Dequeue the first item. Don't forget to decrease fillCount and update
-        if (0 == this.fillCount()) {
+
+        if (this.isEmpty()) {
             throw new RuntimeException("Ring Buffer Underflow");
         }
         T item = this.rb[this.first];
+        this.rb[this.first] = null;
         this.first += 1;
         this.fillCount -= 1;
         if (this.first == this.capacity) {
@@ -69,18 +68,16 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * Return oldest item, but don't remove it.
      */
     public T peek() {
-        // TODO: Return the first item. None of your instance variables should change.
-        if (0 == this.fillCount()) {
+        if (this.isEmpty()) {
             throw new RuntimeException("Ring Buffer Underflow");
         }
         return this.rb[this.first];
     }
 
-    // TODO: When you get to part 5, implement the needed code to support iteration.
     private class Buffer implements Iterator<T> {
         private int index;
 
-        public Buffer() {
+        Buffer() {
             index = 0;
         }
 
