@@ -41,7 +41,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         this.rb[last] = x;
         this.last += 1;
         this.fillCount += 1;
-        if (this.last == this.capacity()) {
+        if (this.last == this.capacity) {
             this.last = 0;
         }
     }
@@ -59,7 +59,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         T item = this.rb[this.first];
         this.first += 1;
         this.fillCount -= 1;
-        if (this.first == this.capacity()) {
+        if (this.first == this.capacity) {
             this.first = 0;
         }
         return item;
@@ -70,6 +70,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public T peek() {
         // TODO: Return the first item. None of your instance variables should change.
+        if (0 == this.fillCount()) {
+            throw new RuntimeException("Ring Buffer Underflow");
+        }
         return this.rb[this.first];
     }
 
