@@ -1,8 +1,11 @@
+import db.Database;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-
 import db.Database;
+
+
 
 public class Main {
     private static final String EXIT   = "exit";
@@ -23,11 +26,12 @@ public class Main {
                 String result = db.transact(line);
                 if (result.length() > 0) {
                     System.out.println(db.transact(line));
+
                 }
             }
             System.out.print(PROMPT);
         }
-
         in.close();
     }
 }
+

@@ -6,6 +6,9 @@ public class Database {
     }
 
     public String transact(String query) {
-        return "YOUR CODE HERE";
+        String[] strarr = new String[1];
+        strarr[0] = query;
+        Parse.main(strarr);
+        return "";
     }
 }
