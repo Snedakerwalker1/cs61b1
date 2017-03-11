@@ -24,8 +24,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
 
         BST get(K k) {
-            if (k != null && k.equals(key))
+            if (k != null && k.equals(key)) {
                 return this;
+            }
             if (k.compareTo(key) > 0) {
                 if (right == null) {
                     return null;
@@ -100,11 +101,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     @Override
     public void put(K key, V value) {
         if (bstree != null) {
-            size += bstree.put(key,value);
+            size += bstree.put(key, value);
         } else {
             bstree = new BST(key, value, null, null);
             size += 1;
-
         }
 
     }
