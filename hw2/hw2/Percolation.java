@@ -100,9 +100,6 @@ public class Percolation {
             if (row == 0) {
                 unions.union(rcToInt(row, col), this.top);
             }
-            if (row == this.size - 1) {
-                bottoms.add(rcToInt(row, col));
-            }
             this.numberOpen += 1;
             if (this.size > 1) {
                 List<int[]> adjacentPnts = adjacent(row, col);
@@ -111,6 +108,17 @@ public class Percolation {
                         unions.union(rcToInt(row, col), rcToInt(adjacentPnts.get(i)[0],
                                 adjacentPnts.get(i)[1]));
                     }
+                }
+            }
+            if (row == this.size - 1) {
+                boolean isbottom = false;
+                int i = 0;
+                while (!isbottom && i < this.bottoms.size()){
+                    isbottom = isbottom || unions.connected(rcToInt(row,col), bottoms.get(i));
+                    i += 1;
+                }
+                if (!isbottom) {
+                    bottoms.add(rcToInt(row, col));
                 }
             }
         }
