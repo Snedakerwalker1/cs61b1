@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Percolation {
     private int numberOpen;
     private int size;
+    private boolean perculates;
     private boolean[][] openArray;
     private WeightedQuickUnionUF unions;
     private List<Integer> tops;
@@ -20,6 +21,7 @@ public class Percolation {
         }
         this.numberOpen = 0;
         this.size = N;
+        this.perculates = false;
         this.bottoms = new ArrayList<>();
         this.tops = new ArrayList<>();
         this.openArray = new boolean[N][N];
@@ -98,12 +100,6 @@ public class Percolation {
             return;
         } else {
             openArray[row][col] = true;
-            if (row == 0) {
-                tops.add(rcToInt(row, col));
-            }
-            if (row == this.size - 1) {
-                bottoms.add(rcToInt(row, col));
-            }
             this.numberOpen += 1;
             if (this.size > 1) {
                 List<int[]> adjacentPnts = adjacent(row, col);
@@ -112,6 +108,18 @@ public class Percolation {
                         unions.union(rcToInt(row, col), rcToInt(adjacentPnts.get(i)[0],
                                 adjacentPnts.get(i)[1]));
                     }
+                }
+            }
+            if (row == 0) {
+                tops.add(rcToInt(row, col));
+                for (int i = 0; i < this.bottoms.size(); i += 1) {
+                    this.perculates = this.perculates || unions.connected(rcToInt(row, col), bottoms.get(i));
+                }
+            }
+            if (row == this.size - 1) {
+                bottoms.add(rcToInt(row, col));
+                for (int i = 0; i < this.bottoms.size(); i += 1) {
+                    this.perculates = this.perculates || unions.connected(rcToInt(row, col), tops.get(i));
                 }
             }
         }
@@ -134,12 +142,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        boolean retbool = false;
-        for (int i = 0; i < this.tops.size(); i += 1) {
-            for (int j = 0; j < this.bottoms.size(); j += 1) {
-                retbool = (retbool || unions.connected(bottoms.get(j), tops.get(i)));
-            }
-        }
-        return retbool;
+        return this.perculates;
     }
 }                       
