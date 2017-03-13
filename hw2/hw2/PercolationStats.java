@@ -32,9 +32,10 @@ public class PercolationStats {
         }
         this.mean = x / (T * N * N);
         for (int i = 0; i < results.size(); i += 1) {
-            standd += (results.get(i) - this.mean) * (results.get(i) - this.mean);
+            standd += ((results.get(i) / (N * N)) - this.mean) *
+                    ((results.get(i) / (N * N)) - this.mean);
         }
-        this.standardDev = Math.sqrt(standd / (N * N * (T - 1)));
+        this.standardDev = Math.sqrt(standd / (T - 1));
     }
 
     public double mean() {

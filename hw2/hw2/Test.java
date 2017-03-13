@@ -17,7 +17,6 @@ public class Test {
     public void test2() {
         PercolationStats percstat = new PercolationStats(2, 100000);
         System.out.print(percstat.mean());
-
     }
 
     @org.junit.Test
@@ -28,8 +27,10 @@ public class Test {
         System.out.println(percstat2.mean());
         System.out.println(percstat1.stddev());
         System.out.println(percstat2.stddev());
-
-
     }
-
+    @org.junit.Test
+    public void test4() {
+        PercolationStats percstat = new PercolationStats(20, 10);
+        System.out.print(percstat.stddev());
+    }
 }
