@@ -18,26 +18,23 @@ public class PercolationStats {
         List<Double> results = new ArrayList<>();
         int row;
         int col;
-        double xi;
         for (int i = 0; i < T; i += 1) {
-            xi = 0;
             Percolation newPerc = new Percolation(N);
             while (!newPerc.percolates()) {
                 row = edu.princeton.cs.introcs.StdRandom.uniform(0, N);
                 col = edu.princeton.cs.introcs.StdRandom.uniform(0, N);
                 if (!newPerc.isOpen(row, col)) {
                     newPerc.open(row, col);
-                    xi += 1;
                 }
             }
-            results.add(xi);
-            x += xi;
+            results.add((double) newPerc.numberOfOpenSites());
+            x += newPerc.numberOfOpenSites();
         }
-        this.mean = x / T;
+        this.mean = x / (T * N * N);
         for (int i = 0; i < results.size(); i += 1) {
             standd += (results.get(i) - this.mean) * (results.get(i) - this.mean);
         }
-        this.standardDev = Math.sqrt(standd / (T - 1));
+        this.standardDev = Math.sqrt(standd / (N * N * (T - 1)));
     }
 
     public double mean() {
