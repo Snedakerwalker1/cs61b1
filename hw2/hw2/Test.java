@@ -13,4 +13,11 @@ public class Test {
         }
     }
 
+    @org.junit.Test
+    public void test2() {
+        PercolationStats percstat = new PercolationStats(15, 15);
+        System.out.print(percstat.mean());
+
+    }
+
 }

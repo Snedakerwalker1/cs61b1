@@ -114,6 +114,20 @@ public class Percolation {
                                 adjacentPnts.get(i)[1]));
                     }
                 }
+                if (row == this.size - 1) {
+                    for (int i = 0; i < this.tops.size(); i += 1) {
+                        this.perculates = this.perculates || unions.connected(rcToInt(row, col),
+                                tops.get(i));
+                    }
+                }
+                if (isFull(row, col)) {
+                    for (int i = 0; i < this.bottoms.size(); i += 1) {
+                        this.perculates = this.perculates || unions.connected(rcToInt(row, col),
+                                bottoms.get(i));
+                    }
+                }
+            } else {
+                this.perculates = true;
             }
         }
     }
@@ -135,12 +149,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        boolean retbool = false;
-        for (int i = 0; i < this.tops.size(); i += 1) {
-            for (int j = 0; j < this.bottoms.size(); j += 1) {
-                retbool = (retbool || unions.connected(bottoms.get(j), tops.get(i)));
-            }
-        }
-        return retbool;
+        return this.perculates;
     }
 }                       

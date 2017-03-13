@@ -18,16 +18,13 @@ public class PercolationStats {
         List<Double> results = new ArrayList<>();
         int row;
         int col;
-        int[] range = new int[2];
-        range[0] = 0;
-        range[1] = N;
         double xi;
         for (int i = 0; i < T; i += 1) {
             xi = 0;
             Percolation newPerc = new Percolation(2);
             while (!newPerc.percolates()) {
-                row = edu.princeton.cs.introcs.StdRandom.discrete(range);
-                col = edu.princeton.cs.introcs.StdRandom.discrete(range);
+                row = edu.princeton.cs.introcs.StdRandom.uniform(0, N);
+                col = edu.princeton.cs.introcs.StdRandom.uniform(0, N);
                 if (!newPerc.isOpen(row, col)) {
                     newPerc.open(row, col);
                     xi += 1;
