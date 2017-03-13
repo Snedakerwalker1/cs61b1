@@ -11,7 +11,9 @@ public class Percolation {
     private List<Integer> bottoms;
     private boolean[][] openArray;
     private WeightedQuickUnionUF unions;
+    private WeightedQuickUnionUF fullunions;
     private int top;
+    private int bottom;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -21,6 +23,7 @@ public class Percolation {
         this.bottoms = new ArrayList<>();
         this.size = N;
         this.top = (N * N) + 3;
+        this.bottom = (N * N) + 2;
         this.openArray = new boolean[N][N];
         for (int i = 0; i < N; i += 1) {
             for (int j = 0; j < N; j += 1) {
@@ -28,6 +31,7 @@ public class Percolation {
             }
         }
         this.unions = new WeightedQuickUnionUF((N * N) + 4);
+        this.fullunions = new WeightedQuickUnionUF((N * N) + 4);
     }
 
     private int rcToInt(int row, int col) {
@@ -99,6 +103,10 @@ public class Percolation {
             openArray[row][col] = true;
             if (row == 0) {
                 unions.union(rcToInt(row, col), this.top);
+                fullunions.union(rcToInt(row, col), this.top);
+            }
+            if (row == this.size - 1) {
+                unions.union(rcToInt(row, col), this.bottom);
             }
             this.numberOpen += 1;
             if (this.size > 1) {
@@ -107,18 +115,9 @@ public class Percolation {
                     if (isOpen(adjacentPnts.get(i)[0], adjacentPnts.get(i)[1])) {
                         unions.union(rcToInt(row, col), rcToInt(adjacentPnts.get(i)[0],
                                 adjacentPnts.get(i)[1]));
+                        fullunions.union(rcToInt(row, col), rcToInt(adjacentPnts.get(i)[0],
+                                adjacentPnts.get(i)[1]));
                     }
-                }
-            }
-            if (row == this.size - 1) {
-                boolean isbottom = false;
-                int i = 0;
-                while (!isbottom && i < this.bottoms.size()){
-                    isbottom = isbottom || unions.connected(rcToInt(row,col), bottoms.get(i));
-                    i += 1;
-                }
-                if (!isbottom) {
-                    bottoms.add(rcToInt(row, col));
                 }
             }
         }
@@ -129,7 +128,7 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
-        return unions.connected(rcToInt(row, col), this.top);
+        return fullunions.connected(rcToInt(row, col), this.top);
     }
 
     public int numberOfOpenSites() {
@@ -137,12 +136,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        int i = 0;
-        boolean isfull = false;
-        while (i < this.bottoms.size() && !isfull) {
-            isfull = isfull || unions.connected(this.bottoms.get(i), this.top);
-            i += 1;
-        }
-        return isfull;
+        return unions.connected(this.bottom, this.top);
     }
 }                       
