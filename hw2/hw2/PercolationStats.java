@@ -21,7 +21,7 @@ public class PercolationStats {
         double xi;
         for (int i = 0; i < T; i += 1) {
             xi = 0;
-            Percolation newPerc = new Percolation(2);
+            Percolation newPerc = new Percolation(N);
             while (!newPerc.percolates()) {
                 row = edu.princeton.cs.introcs.StdRandom.uniform(0, N);
                 col = edu.princeton.cs.introcs.StdRandom.uniform(0, N);
