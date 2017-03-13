@@ -113,18 +113,19 @@ public class Percolation {
                                 adjacentPnts.get(i)[1]));
                     }
                 }
-                if (row == this.size - 1) {
-                    for (int i = 0; i < this.tops.size(); i += 1) {
-                        this.perculates = this.perculates || unions.connected(rcToInt(row, col),
-                                tops.get(i));
+                if (!this.perculates) {
+                    if (row == this.size - 1) {
+                        this.perculates = isFull(row, col);
+                        }
                     }
-                }
-                if (isFull(row, col)) {
-                    for (int i = 0; i < this.bottoms.size(); i += 1) {
-                        this.perculates = this.perculates || unions.connected(rcToInt(row, col),
-                                bottoms.get(i));
+                    if (isFull(row, col)) {
+                        int i = 0;
+                        while (!this.perculates && i < bottoms.size()) {
+                            this.perculates = this.perculates || unions.connected(rcToInt(row, col),
+                                    bottoms.get(i));
+                            i += 1;
+                        }
                     }
-                }
             } else {
                 this.perculates = true;
             }
@@ -137,7 +138,8 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         boolean retbool = false;
-        for (int i = 0; i < tops.size(); i += 1) {
+        int i = 0;
+        while (!retbool && i < tops.size()) {
             retbool = (retbool || unions.connected(rcToInt(row, col), tops.get(i)));
         }
         return retbool;
