@@ -116,16 +116,16 @@ public class Percolation {
                 if (!this.perculates) {
                     if (row == this.size - 1) {
                         this.perculates = isFull(row, col);
-                        }
                     }
-                    if (isFull(row, col)) {
-                        int i = 0;
-                        while (!this.perculates && i < bottoms.size()) {
-                            this.perculates = this.perculates || unions.connected(rcToInt(row, col),
-                                    bottoms.get(i));
-                            i += 1;
-                        }
+                }
+                if (isFull(row, col)) {
+                    int i = 0;
+                    while (!this.perculates && i < bottoms.size()) {
+                        this.perculates = this.perculates || unions.connected(rcToInt(row, col),
+                                bottoms.get(i));
+                        i += 1;
                     }
+                }
             } else {
                 this.perculates = true;
             }
@@ -141,6 +141,7 @@ public class Percolation {
         int i = 0;
         while (!retbool && i < tops.size()) {
             retbool = (retbool || unions.connected(rcToInt(row, col), tops.get(i)));
+            i += 1;
         }
         return retbool;
     }
