@@ -28,11 +28,11 @@ public class Percolation {
                 openArray[i][j] = false;
             }
         }
-        this.unions = new WeightedQuickUnionUF(N*N);
+        this.unions = new WeightedQuickUnionUF(N * N);
     }
 
     private int rcToInt(int row, int col) {
-        return this.size*row + col;
+        return this.size * row + col;
     }
     private List<int[]> adjacent(int row, int col) {
         List<int[]> retLst = new ArrayList<>();
@@ -105,10 +105,13 @@ public class Percolation {
                 bottoms.add(rcToInt(row, col));
             }
             this.numberOpen += 1;
-            List<int[]> adjacentPnts = adjacent(row, col);
-            for (int i = 0; i < adjacentPnts.size(); i += 1){
-                if (isOpen(adjacentPnts.get(i)[0], adjacentPnts.get(i)[1])) {
-                    unions.union(rcToInt(row, col), rcToInt(adjacentPnts.get(i)[0], adjacentPnts.get(i)[1]));
+            if (this.size > 1) {
+                List<int[]> adjacentPnts = adjacent(row, col);
+                for (int i = 0; i < adjacentPnts.size(); i += 1) {
+                    if (isOpen(adjacentPnts.get(i)[0], adjacentPnts.get(i)[1])) {
+                        unions.union(rcToInt(row, col), rcToInt(adjacentPnts.get(i)[0],
+                                adjacentPnts.get(i)[1]));
+                    }
                 }
             }
         }

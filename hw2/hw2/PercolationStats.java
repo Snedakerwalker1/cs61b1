@@ -38,7 +38,7 @@ public class PercolationStats {
         }
         this.mean = x / T;
         for (int i = 0; i < results.size(); i += 1) {
-            standd += (results.get(i) - this.mean)*(results.get(i) - this.mean);
+            standd += (results.get(i) - this.mean) * (results.get(i) - this.mean);
         }
         this.standardDev = Math.sqrt(standd / (T - 1));
     }
@@ -52,10 +52,10 @@ public class PercolationStats {
     }
 
     public double confidenceLow() {
-        return this.mean - ((1.96*standardDev) / (Math.sqrt(this.number)));
+        return this.mean - ((1.96 * standardDev) / (Math.sqrt(this.number)));
     }
 
     public double confidenceHigh() {
-        return this.mean + ((1.96*standardDev) / (Math.sqrt(this.number)));
+        return this.mean + ((1.96 * standardDev) / (Math.sqrt(this.number)));
     }
 }                       
