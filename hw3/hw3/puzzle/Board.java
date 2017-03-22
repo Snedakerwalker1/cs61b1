@@ -68,9 +68,9 @@ public class Board implements WorldState{
         int returnVal = 0;
         for (int i = 0; i < size; i += 1) {
             for (int j = 0; j < size; j += 1) {
-                if ((i == this.size - 1) && (j == this.size - 1) && ((board[i][j] != 0) || (board[i][j] != BLANK))) {
-                    returnVal += 1;
-                } else if (board[i][j] != this.size* 1 + j + 1) {
+                if ((i == this.size - 1) && (j == this.size - 1)) {
+                    returnVal += 0;
+                } else if (board[i][j] != this.size* i + j + 1) {
                     returnVal += 1;
                 }
             }
@@ -90,17 +90,16 @@ public class Board implements WorldState{
 
     private int manhattanCalc(int i, int j) {
         int val = tileAt(i, j);
-        if ((this.size - 1 == i) && (this.size - 1 == j) && ((val == 0)) || (val == BLANK)) {
+        if ((this.size - 1 == i) && (this.size - 1 == j)) {
+            return 0;
+        }
+        if (val == 0) {
             return 0;
         }
         if (val == this.size * i + j + 1) {
             return 0;
         }
-        if (val == 0 || val == BLANK) {
-            return this.size - 1 - i + this.size - 2 - j;
-        } else {
-            return Math.abs(val / this.size - i) + Math.abs(val % this.size - j - 1);
-        }
+        return Math.abs(val / this.size - i) + Math.abs(val % this.size - j - 1);
     }
 
     @Override
@@ -112,7 +111,7 @@ public class Board implements WorldState{
     public boolean isGoal() {
         for (int i = 0; i < size; i += 1) {
             for (int j = 0; j < size; j += 1) {
-                if (i != this.size && j != this.size) {
+                if (i != this.size - 1 && j != this.size - 1) {
                     if (!(this.board[i][j] == i * this.size + j + 1)) {
                         return false;
                     }
