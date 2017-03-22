@@ -129,7 +129,7 @@ public class Board implements WorldState {
 
     @Override
     public boolean equals(Object y) {
-        if (y.equals(null) || y == null) {
+        if (y == null) {
             return false;
         }
         if (y.getClass().equals(this.getClass())) {
