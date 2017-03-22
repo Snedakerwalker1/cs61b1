@@ -24,12 +24,10 @@ public class Solver {
                 if (node.last != null) {
                     if (!(node.last.world.equals(world)) && !(world.equals(initial))
                             && !(worldSet.contains(world))) {
-                        worldSet.add(world);
                         SearchNode newSearch = new SearchNode(world, node.movesTaken + 1, node);
                         que.insert(newSearch);
                     }
                 } else {
-                    worldSet.add(world);
                     SearchNode newSearch = new SearchNode(world, node.movesTaken + 1, node);
                     que.insert(newSearch);
                 }
