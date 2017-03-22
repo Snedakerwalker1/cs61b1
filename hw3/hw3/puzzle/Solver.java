@@ -1,11 +1,6 @@
 package hw3.puzzle;
-
-import javafx.concurrent.WorkerStateEvent;
-
 import java.util.*;
-
 import edu.princeton.cs.algs4.MinPQ;
-import edu.princeton.cs.algs4.StdIn;
 
 /**
  * Created by wsnedaker on 3/20/2017.
