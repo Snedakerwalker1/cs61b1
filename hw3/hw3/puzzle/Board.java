@@ -104,7 +104,7 @@ public class Board implements WorldState {
     private int iVal(int val) {
         return (val) / this.size;
     }
-    private int jVal (int val) {
+    private int jVal(int val) {
         return (val) % this.size;
     }
 
@@ -129,6 +129,9 @@ public class Board implements WorldState {
 
     @Override
     public boolean equals(Object y) {
+        if (y.equals(null) || y == null) {
+            return false;
+        }
         if (y.getClass().equals(this.getClass())) {
             Board newY = (Board) y;
             if (newY.size() != this.size) {
