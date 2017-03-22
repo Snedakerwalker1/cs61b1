@@ -96,7 +96,7 @@ public class Board implements WorldState {
         if (val == this.size * i + j + 1) {
             return 0;
         }
-        return Math.abs(val / this.size - i) + Math.abs(Math.floorMod(val, this.size) - 1 - j);
+        return Math.abs(val / this.size - 1 - i) + Math.abs(Math.floorMod(val, this.size) - 1 - j);
     }
 
     @Override
