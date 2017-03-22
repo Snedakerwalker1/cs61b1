@@ -93,10 +93,19 @@ public class Board implements WorldState {
         if (val == 0) {
             return 0;
         }
-        if (val == this.size * i + j + 1) {
+        if (val != (this.size * i) + j + 1) {
+            int newi = iVal(val - 1);
+            int newj = jVal(val - 1);
+            return Math.abs(newi - i) + Math.abs(newj - j);
+        } else {
             return 0;
         }
-        return Math.abs(val / this.size - 1 - i) + Math.abs(Math.floorMod(val, this.size) - 1 - j);
+    }
+    private int iVal(int val) {
+        return (val) / this.size;
+    }
+    private int jVal (int val) {
+        return (val) % this.size;
     }
 
     @Override
@@ -108,7 +117,7 @@ public class Board implements WorldState {
     public boolean isGoal() {
         for (int i = 0; i < size; i += 1) {
             for (int j = 0; j < size; j += 1) {
-                if (i != this.size - 1 && j != this.size - 1) {
+                if (i != this.size - 1 || j != this.size - 1) {
                     if (!(this.board[i][j] == i * this.size + j + 1)) {
                         return false;
                     }
@@ -122,6 +131,9 @@ public class Board implements WorldState {
     public boolean equals(Object y) {
         if (y.getClass().equals(this.getClass())) {
             Board newY = (Board) y;
+            if (newY.size() != this.size) {
+                return false;
+            }
             for (int i = 0; i < size; i += 1) {
                 for (int j = 0; j < size; j += 1) {
                     if (this.tileAt(i, j) != newY.tileAt(i, j)) {
@@ -132,6 +144,10 @@ public class Board implements WorldState {
             return true;
         }
         return false;
+    }
+    @Override
+    public int hashCode() {
+        return 4;
     }
 
 

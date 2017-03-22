@@ -36,8 +36,6 @@ public class Solver {
             }
         }
         SearchNode nodesolution = que.min();
-        solution.add(0, nodesolution.world);
-        nodesolution = nodesolution.last;
         while (nodesolution.last != null) {
             solution.add(0, nodesolution.world);
             nodesolution = nodesolution.last;
