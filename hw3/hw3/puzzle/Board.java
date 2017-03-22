@@ -90,9 +90,6 @@ public class Board implements WorldState{
 
     private int manhattanCalc(int i, int j) {
         int val = tileAt(i, j);
-        if ((this.size - 1 == i) && (this.size - 1 == j)) {
-            return 0;
-        }
         if (val == 0) {
             return 0;
         }
