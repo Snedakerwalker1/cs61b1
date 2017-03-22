@@ -1,5 +1,7 @@
 package hw3.puzzle;
-import java.util.*;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
 import edu.princeton.cs.algs4.MinPQ;
 
 /**
@@ -20,7 +22,8 @@ public class Solver {
             worldSet.add(node.world);
             for (WorldState world : node.world.neighbors()) {
                 if (node.last != null) {
-                    if (!(node.last.world.equals(world)) && !(world.equals(initial)) && !(worldSet.contains(world))) {
+                    if (!(node.last.world.equals(world)) && !(world.equals(initial))
+                            && !(worldSet.contains(world))) {
                         worldSet.add(world);
                         SearchNode newSearch = new SearchNode(world, node.movesTaken + 1, node);
                         que.insert(newSearch);
@@ -49,16 +52,28 @@ public class Solver {
         return this.solution;
     }
     private class SearchNode implements Comparable<SearchNode> {
-        public WorldState world;
-        public int movesTaken;
-        public SearchNode last;
-        public int estimate;
+        private WorldState world;
+        private int movesTaken;
+        private SearchNode last;
+        private int estimate;
 
-        public SearchNode(WorldState w, int m, SearchNode l) {
+        SearchNode(WorldState w, int m, SearchNode l) {
             this.world = w;
             this.movesTaken = m;
             this.last = l;
             this.estimate = w.estimatedDistanceToGoal();
+        }
+        public WorldState world() {
+            return this.world;
+        }
+        public int movesTaken() {
+            return this.movesTaken;
+        }
+        public int estimate() {
+            return this.estimate;
+        }
+        public SearchNode last() {
+            return this.last;
         }
 
         @Override

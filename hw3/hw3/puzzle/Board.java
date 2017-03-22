@@ -1,7 +1,7 @@
 package hw3.puzzle;
 import edu.princeton.cs.algs4.Queue;
 
-public class Board implements WorldState{
+public class Board implements WorldState {
     private int[][] board;
     private int size;
     private int BLANK = 0;
@@ -16,8 +16,8 @@ public class Board implements WorldState{
         }
     }
     public int tileAt(int i, int j) {
-        if (i > size - 1 || i < 0 || j < 0 || j > size - 1 ) {
-            throw new IndexOutOfBoundsException("Git gud bitch");
+        if (i > size - 1 || i < 0 || j < 0 || j > size - 1) {
+            throw new IndexOutOfBoundsException("Invaled index");
         }
         return board[i][j];
     }
@@ -26,8 +26,8 @@ public class Board implements WorldState{
     }
 
     /**
-     * Returns neighbors of this board.
-     * SPOILERZ: This is the answer.
+     * Graciously given by the amazing CS61B teaching staff
+     * Thanks Hug.
      */
     @Override
     public Iterable<WorldState> neighbors() {
@@ -70,7 +70,7 @@ public class Board implements WorldState{
             for (int j = 0; j < size; j += 1) {
                 if ((i == this.size - 1) && (j == this.size - 1)) {
                     returnVal += 0;
-                } else if (board[i][j] != this.size* i + j + 1) {
+                } else if (board[i][j] != this.size * i + j + 1) {
                     returnVal += 1;
                 }
             }
@@ -124,7 +124,7 @@ public class Board implements WorldState{
             Board newY = (Board) y;
             for (int i = 0; i < size; i += 1) {
                 for (int j = 0; j < size; j += 1) {
-                    if (!(this.board[i][j] == newY.tileAt(i, j))) {
+                    if (this.tileAt(i, j) != newY.tileAt(i, j)) {
                         return false;
                     }
                 }
@@ -133,6 +133,7 @@ public class Board implements WorldState{
         }
         return false;
     }
+
 
 
     /** Returns the string representation of the board. 
@@ -144,7 +145,7 @@ public class Board implements WorldState{
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
