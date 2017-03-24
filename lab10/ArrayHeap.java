@@ -107,11 +107,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (parentIndex(index) <= 0) {
             return;
         }
-        if (this.contents[index].myPriority < this.contents[parentIndex(index)].myPriority) {
+        if (min(index, parentIndex(index)) != parentIndex(index)) {
             this.swap(index, parentIndex(index));
             swim(parentIndex(index));
+        } else {
+            return;
         }
-        return;
     }
 
     /**
@@ -120,14 +121,22 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     private void sink(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-        if (leftIndex(index) >= size) {
+        if (leftIndex(index) > size) {
             return;
         }
-        if (this.contents[index].myPriority > this.contents[leftIndex(index)].myPriority) {
+        if (rightIndex(index) > size) {
+            return;
+        }
+        if (min(rightIndex(index), leftIndex(index)) == leftIndex(index) && min(index, leftIndex(index)) != index) {
             this.swap(index, leftIndex(index));
             sink(leftIndex(index));
+        } else if (min(index, rightIndex(index)) != index) {
+            this.swap(index, rightIndex(index));
+            sink(rightIndex(index));
         }
-        return;
+        else {
+            return;
+        }
     }
 
     /**
