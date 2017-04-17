@@ -41,7 +41,7 @@ public class Rasterer {
             this.lr_lon = lr_lon;
             this.ul_lat = ul_lat;
             this.ul_lon = ul_lon;
-            this.LonDPP = (ul_lon - lr_lon) / 256;
+            this.LonDPP = (lr_lon - ul_lon) / 256;
             this.node = node;
             this.root = root;
             this.d_lon = (ul_lon - lr_lon) / 2;
@@ -197,8 +197,8 @@ public class Rasterer {
         Rasterer rast = new Rasterer("img/");
         System.out.print(rast.imagelist.child1.node);
         System.out.println(rast.imagelist.child1.child1.child1.child1.child1.child1.node);
-        System.out.println(rast.imagelist.child1.child2.node);
-        System.out.println(rast.imagelist.child3.child2.node);
+        System.out.println(rast.imagelist.child1.child2.LonDPP);
+        System.out.println(rast.imagelist.child3.child2.LonDPP);
         System.out.println(rast.imagelist.node);
         double d_lat = (37.892195547244356 - 37.82280243352756) / 2;
         double d_lon = (-122.2998046875 + 122.2119140625) / 2;
@@ -209,8 +209,8 @@ public class Rasterer {
         System.out.println(rast.imagelist.QuadNode(rast.imagelist,
                 -122.2998046875 + d_lon2, 37.892195547244356 - d_lat2,
                 -122.2119140625 - d_lon, 37.82280243352756 + d_lat));
-        System.out.println(rast.imagelist.QuadNodeLeftAprrox( rast.imagelist, -122.2998046875 + d_lon2, 37.892195547244356 - d_lat2,
-                -122.2119140625 - d_lon, 37.82280243352756 + d_lat,(-122.2998046875 + d_lon2 + 122.2119140625 - d_lon) / 1084).ul_lon);
+        System.out.println(rast.imagelist.QuadNodeLeftAprrox( rast.imagelist, -122.2998046875, 37.892195547244356,
+                -122.2119140625 , 37.82280243352756,(-122.2998046875 + d_lon2 + 122.2119140625 - d_lon) / 1284).deapth);
 
     }
 
