@@ -111,7 +111,6 @@ public class Rasterer {
         }
         int get_depth(double LonDPP) {
             for (int i = 0; i + 1 < depth_DPP.length; i += 1) {
-                System.out.println(depth_DPP[i]);
                 if (depth_DPP[i] > LonDPP && depth_DPP[i + 1] <= LonDPP) {
                     return i + 1;
                 }
