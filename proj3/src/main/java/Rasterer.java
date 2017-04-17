@@ -84,7 +84,7 @@ public class Rasterer {
         QuadTree QuadNodeLeftAprrox(QuadTree qt, double ul_lon, double ul_lat,
                           double lr_lon, double lr_lat, double DPP) {
             if (qt.ul_lon >= ul_lon && qt.ul_lat >= ul_lat &&
-                qt.lr_lon <= ul_lon && qt.lr_lat <= ul_lat && qt.LonDPP <= DPP) {
+                qt.lr_lon <= ul_lon && qt.lr_lat <= ul_lat && qt.LonDPP < DPP) {
                 return qt;
             }
             if (qt.child1 != null) {
