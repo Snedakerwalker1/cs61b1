@@ -60,23 +60,23 @@ public class Rasterer {
             child4 = new QuadTree(root, height + 1, node * 10 + 4, deapth + 1,
                     ul_lon + d_lon, ul_lat - d_lat, lr_lon , lr_lat);
         }
-        QuadTree QuadNode(QuadTree qt, double ul_lon, double ul_lat, double lr_lon, double lr_lat) {
+        QuadTree QuadNode(QuadTree qt, double ul_lon, double ul_lat, double lr_lon, double lr_lat, int depth) {
             if (qt.ul_lon == ul_lon && qt.ul_lat == ul_lat
-                    && qt.lr_lat == lr_lat && qt.lr_lon == lr_lon) {
+                    && qt.lr_lat == lr_lat && qt.lr_lon == lr_lon && qt.deapth == depth ) {
                 return qt;
             }
             if (qt.child1 != null) {
                 if (qt.child1.lr_lat <= ul_lat && qt.child1.lr_lon >= ul_lon) {
-                    return QuadNode(qt.child1, ul_lon, ul_lat, lr_lon, lr_lat);
+                    return QuadNode(qt.child1, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
                 if (qt.child2.ul_lon <= ul_lon && qt.child2.lr_lat <= ul_lat ) {
-                    return QuadNode(qt.child2, ul_lon, ul_lat, lr_lon, lr_lat);
+                    return QuadNode(qt.child2, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
                 if ( qt.child3.ul_lat >= ul_lat && qt.child3.lr_lon >= ul_lon) {
-                    return QuadNode(qt.child3, ul_lon, ul_lat, lr_lon, lr_lat);
+                    return QuadNode(qt.child3, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
                 if (qt.child4.ul_lon <= ul_lon && qt.child4.ul_lat >= ul_lat) {
-                    return QuadNode(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat);
+                    return QuadNode(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
             }
             return qt;
@@ -87,16 +87,20 @@ public class Rasterer {
                 return qt;
             }
             if (qt.child1 != null) {
-                if (qt.child1.lr_lat <= ul_lat && qt.child1.lr_lon >= ul_lon) {
+                if (qt.child1.lr_lat <= ul_lat && qt.child1.lr_lon >= ul_lon
+                        && qt.child1.ul_lat >= ul_lat && qt.child1.ul_lon <= ul_lon) {
                     return QuadNodeLeftAprrox(qt.child1, ul_lon, ul_lat, depth);
                 }
-                if (qt.child2.ul_lon <= ul_lon && qt.child2.lr_lat <= ul_lat ) {
+                if (qt.child2.lr_lat <= ul_lat && qt.child2.lr_lon >= ul_lon
+                        && qt.child2.ul_lat >= ul_lat && qt.child2.ul_lon <= ul_lon){
                     return QuadNodeLeftAprrox(qt.child2, ul_lon, ul_lat, depth);
                 }
-                if ( qt.child3.ul_lat >= ul_lat && qt.child3.lr_lon >= ul_lon) {
+                if (qt.child3.lr_lat <= ul_lat && qt.child3.lr_lon >= ul_lon
+                        && qt.child3.ul_lat >= ul_lat && qt.child3.ul_lon <= ul_lon) {
                     return QuadNodeLeftAprrox(qt.child3, ul_lon, ul_lat, depth);
                 }
-                if (qt.child4.ul_lon <= ul_lon && qt.child4.ul_lat >= ul_lat) {
+                if (qt.child4.lr_lat <= ul_lat && qt.child4.lr_lon >= ul_lon
+                        && qt.child4.ul_lat >= ul_lat && qt.child4.ul_lon <= ul_lon) {
                     return QuadNodeLeftAprrox(qt.child4, ul_lon, ul_lat, depth);
                 }
             }
@@ -131,8 +135,19 @@ public class Rasterer {
             String[][] array;
             double LonDDP = (lr_lon - ul_lon) / w;
             int depth = get_depth(LonDDP);
-            QuadTree leftApprox = QuadNodeLeftAprrox(this, Math.max(ROOT_ULLON, ul_lon),
-                    Math.min(ul_lat, ROOT_ULLAT), depth);
+            if (ul_lon <= ROOT_ULLON) {
+                ul_lon = ROOT_ULLON;
+            }
+            if (ul_lat >= ROOT_ULLAT) {
+                ul_lat = ROOT_ULLAT;
+            }
+            if (lr_lat <= ROOT_LRLAT) {
+                lr_lat = ROOT_LRLAT;
+            }
+            if (lr_lon >= ROOT_LRLON) {
+                lr_lon = ROOT_LRLON;
+            }
+            QuadTree leftApprox = QuadNodeLeftAprrox(this, ul_lon, ul_lat, depth);
             QuadTree arrtree = leftApprox;
             QuadTree temptree = arrtree;
             if (leftApprox.node == 0) {
@@ -147,10 +162,10 @@ public class Rasterer {
                 for (int i = 0; i < width; i += 1) {
                     temptree = arrtree;
                     for (int j = 0; j < height; j += 1) {
-                        array[i][j] = temptree.root + leftApprox.node + ".png";
-                        temptree = QuadNodeLeftAprrox(this, temptree.ul_lon, temptree.ul_lat - temptree.d_lat, depth);
+                        array[i][j] = temptree.root + temptree.node + ".png";
+                        temptree = QuadNodeLeftAprrox(this, arrtree.ul_lon + arrtree.d_lon, arrtree.ul_lat, depth);
                     }
-                    arrtree = QuadNodeLeftAprrox(this, arrtree.ul_lon + arrtree.d_lon, arrtree.ul_lat, depth);
+                    arrtree = QuadNodeLeftAprrox(this, temptree.ul_lon, temptree.ul_lat - temptree.d_lat, depth);
                 }
             }
             results.put("render_grid", array);
@@ -233,7 +248,7 @@ public class Rasterer {
         System.out.println(d_lat);
         System.out.println(d_lon);
         System.out.println(rast.imagelist.QuadNode(rast.imagelist,
-                -122.2998046875 + d_lon2, 37.892195547244356, -122.2119140625 - d_lon , 37.82280243352756 + d_lat + d_lat2).node);
+                -122.2998046875 + d_lon2, 37.892195547244356, -122.2119140625 - d_lon , 37.82280243352756 + d_lat + d_lat2, 2).node);
         System.out.println((122.2998046875 - 122.2119140625) / 1200);
         System.out.println(rast.imagelist.Neighbors(-122.24163047377972, 37.87655856892288,
                 -122.24053369025242, 37.87548268822065, 892.0, 875.0).get("raster_ul_lon"));
