@@ -80,12 +80,12 @@ public class Rasterer {
                     return QuadNode(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat);
                 }
             }
-            return this;
+            return qt;
         }
         QuadTree QuadNodeLeftAprrox(QuadTree qt, double ul_lon, double ul_lat,
                           double lr_lon, double lr_lat, double DPP) {
-            if (qt.ul_lon <= ul_lon && qt.ul_lat <= ul_lat &&
-                qt.lr_lon >= lr_lon && qt.lr_lat >= lr_lat && qt.LonDPP <= DPP) {
+            if (qt.ul_lon >= ul_lon && qt.ul_lat >= ul_lat &&
+                qt.lr_lon <= ul_lon && qt.lr_lat <= ul_lat && qt.LonDPP <= DPP) {
                 return qt;
             }
             if (qt.child1 != null) {
@@ -106,7 +106,7 @@ public class Rasterer {
                     return QuadNodeLeftAprrox(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat, DPP);
                 }
             }
-            return null;
+            return qt;
         }
 
         Map<String, Object> Neighbors(double ul_lon, double ul_lat,
@@ -184,7 +184,7 @@ public class Rasterer {
      *                    string. <br>
      * "query_success" -> Boolean, whether the query was able to successfully complete. Don't
      *                    forget to set this to true! <br>
-     * @see #REQUIRED_RASTER_REQUEST_PARAMS
+     * @see #
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         Map<String, Object> results = imagelist.Neighbors(params.get("ullon"), params.get("ullat"),
