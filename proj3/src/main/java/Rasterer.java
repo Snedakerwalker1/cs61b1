@@ -22,7 +22,7 @@ public class Rasterer {
         double ul_lon;
         double lr_lat;
         double lr_lon;
-        double LonDPP = (ul_lon - lr_lon) / 256;
+        double LonDPP;
         String root;
         QuadTree child1;
         QuadTree child2;
@@ -41,6 +41,7 @@ public class Rasterer {
             this.lr_lon = lr_lon;
             this.ul_lat = ul_lat;
             this.ul_lon = ul_lon;
+            this.LonDPP = (ul_lon - lr_lon) / 256;
             this.node = node;
             this.root = root;
             this.d_lon = (ul_lon - lr_lon) / 2;
@@ -83,8 +84,8 @@ public class Rasterer {
         }
         QuadTree QuadNodeLeftAprrox(QuadTree qt, double ul_lon, double ul_lat,
                           double lr_lon, double lr_lat, double DPP) {
-            if (qt.ul_lon >= ul_lon && qt.ul_lat >= ul_lat &&
-                qt.lr_lon <= ul_lon && qt.lr_lat <= ul_lat && qt.LonDPP < DPP) {
+            if (qt.ul_lon <= ul_lon && qt.ul_lat <= ul_lat &&
+                qt.lr_lon >= lr_lon && qt.lr_lat >= lr_lat && qt.LonDPP <= DPP) {
                 return qt;
             }
             if (qt.child1 != null) {
@@ -105,7 +106,7 @@ public class Rasterer {
                     return QuadNodeLeftAprrox(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat, DPP);
                 }
             }
-            return this;
+            return null;
         }
 
         Map<String, Object> Neighbors(double ul_lon, double ul_lat,
@@ -208,6 +209,8 @@ public class Rasterer {
         System.out.println(rast.imagelist.QuadNode(rast.imagelist,
                 -122.2998046875 + d_lon2, 37.892195547244356 - d_lat2,
                 -122.2119140625 - d_lon, 37.82280243352756 + d_lat));
+        System.out.println(rast.imagelist.QuadNodeLeftAprrox( rast.imagelist, -122.2998046875 + d_lon2, 37.892195547244356 - d_lat2,
+                -122.2119140625 - d_lon, 37.82280243352756 + d_lat,(-122.2998046875 + d_lon2 + 122.2119140625 - d_lon) / 1084).ul_lon);
 
     }
 
