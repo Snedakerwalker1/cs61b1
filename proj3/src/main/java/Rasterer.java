@@ -45,7 +45,7 @@ public class Rasterer {
             this.LonDPP = (lr_lon - ul_lon) / 256;
             this.node = node;
             this.root = root;
-            this.d_lon = (ul_lon - lr_lon) / 2;
+            this.d_lon = (lr_lon - ul_lon) / 2;
             this.d_lat = (ul_lat - lr_lat) / 2;
             this.dis_lon[deapth] = d_lon;
             this.dis_lat[deapth] = d_lat;
@@ -110,10 +110,8 @@ public class Rasterer {
             return qt;
         }
         int get_depth(double LonDPP) {
-            for (int i = 0; i < depth_DPP.length; i += 1) {
-                if (i + 1 == depth_DPP.length) {
-                    return i;
-                }
+            for (int i = 0; i + 1 < depth_DPP.length; i += 1) {
+                System.out.println(depth_DPP[i]);
                 if (depth_DPP[i] > LonDPP && depth_DPP[i + 1] <= LonDPP) {
                     return i + 1;
                 }
@@ -231,9 +229,9 @@ public class Rasterer {
         System.out.println(rast.imagelist.QuadNode(rast.imagelist,
                 -122.2998046875 + d_lon2, 37.892195547244356 - d_lat2,
                 -122.2119140625 - d_lon, 37.82280243352756 + d_lat));
+        System.out.println((122.2998046875 - 122.2119140625) / 1200);
         System.out.println(rast.imagelist.Neighbors(-122.2998046875, 37.892195547244356,
-                -122.2119140625 , 37.82280243352756, 256 * 2, 256 * 2 ).get("depth"));
-
+                -122.2119140625 , 37.82280243352756, 600, 600).get("depth"));
     }
 
 }
