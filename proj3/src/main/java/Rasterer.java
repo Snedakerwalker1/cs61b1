@@ -12,6 +12,7 @@ public class Rasterer {
     // Recommended: QuadTree instance variable. You'll need to make
     //              your own QuadTree since there is no built-in quadtree in Java.
     QuadTree imagelist;
+    double[] depth_DPP;
 
     private class QuadTree {
         int node;
@@ -83,30 +84,44 @@ public class Rasterer {
             return qt;
         }
         QuadTree QuadNodeLeftAprrox(QuadTree qt, double ul_lon, double ul_lat,
-                          double lr_lon, double lr_lat, double DPP) {
+                          double lr_lon, double lr_lat, int depth) {
             if (qt.ul_lon >= ul_lon && qt.ul_lat >= ul_lat &&
-                qt.lr_lon <= ul_lon && qt.lr_lat <= ul_lat && qt.LonDPP <= DPP) {
+                qt.lr_lon <= ul_lon && qt.lr_lat <= ul_lat && qt.deapth == depth) {
                 return qt;
             }
             if (qt.child1 != null) {
                 if (qt.child1.ul_lon >= ul_lon && qt.child1.ul_lat >= ul_lat &&
                         qt.child1.lr_lat <= lr_lat && qt.child1.lr_lon <= lr_lon) {
-                    return QuadNodeLeftAprrox(qt.child1, ul_lon, ul_lat, lr_lon, lr_lat, DPP);
+                    return QuadNodeLeftAprrox(qt.child1, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
                 if (qt.child2.ul_lon >= ul_lon && qt.child2.ul_lat >= ul_lat &&
                         qt.child2.lr_lat <= lr_lat && qt.child2.lr_lon <= lr_lon) {
-                    return QuadNodeLeftAprrox(qt.child2, ul_lon, ul_lat, lr_lon, lr_lat, DPP);
+                    return QuadNodeLeftAprrox(qt.child2, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
                 if (qt.child3.ul_lon >= ul_lon && qt.child3.ul_lat >= ul_lat &&
                         qt.child3.lr_lat <= lr_lat && qt.child3.lr_lon <= lr_lon) {
-                    return QuadNodeLeftAprrox(qt.child3, ul_lon, ul_lat, lr_lon, lr_lat, DPP);
+                    return QuadNodeLeftAprrox(qt.child3, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
                 if (qt.child4.ul_lon >= ul_lon && qt.child4.ul_lat >= ul_lat &&
                         qt.child4.lr_lat <= lr_lat && qt.child4.lr_lon <= lr_lon) {
-                    return QuadNodeLeftAprrox(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat, DPP);
+                    return QuadNodeLeftAprrox(qt.child4, ul_lon, ul_lat, lr_lon, lr_lat, depth);
                 }
             }
             return qt;
+        }
+        int get_depth(double LonDPP) {
+            for (int i = 0; i < depth_DPP.length; i += 1) {
+                if (i + 1 == depth_DPP.length) {
+                    return i;
+                }
+                if (depth_DPP[i] > LonDPP && depth_DPP[i + 1] <= LonDPP) {
+                    return i + 1;
+                }
+                if (depth_DPP[i] == LonDPP) {
+                    return i;
+                }
+            }
+            return 0;
         }
 
         Map<String, Object> Neighbors(double ul_lon, double ul_lat,
@@ -119,8 +134,9 @@ public class Rasterer {
             Double width = (w / 256);
             int wd = 1 + width.intValue();
             array = new String[wd][ht];
+            int depth = get_depth(LonDDP);
             QuadTree leftApprox = QuadNodeLeftAprrox(this, ul_lon, ul_lat, lr_lon,
-                    lr_lat, LonDDP);
+                    lr_lat, depth);
             QuadTree arrtree = leftApprox;
             QuadTree temptree = arrtree;
             for (int i = 0; i < wd; i += 1) {
@@ -138,7 +154,7 @@ public class Rasterer {
             results.put("raster_ul_lat", leftApprox.ul_lat);
             results.put("raster_lr_lon", temptree.lr_lon);
             results.put("raster_lr_lat", temptree.lr_lat);
-            results.put("depth", leftApprox.deapth);
+            results.put("depth", depth);
             return results;
         }
     }
@@ -151,6 +167,12 @@ public class Rasterer {
                 Y_ROOT_LRLAT = 37.82280243352756, X_ROOT_LRLON = -122.2119140625;
         this.imagelist = new QuadTree(imgRoot, 0, 0, 0,
                 X_ROOT_ULLON, Y_ROOT_ULLAT, X_ROOT_LRLON, Y_ROOT_LRLAT);
+        this.depth_DPP = new double[7];
+        QuadTree temp = imagelist;
+        for (int i = 0; i < 7; i += 1) {
+            depth_DPP[i] = temp.LonDPP;
+            temp = temp.child1;
+        }
     }
 
     /**
@@ -209,8 +231,8 @@ public class Rasterer {
         System.out.println(rast.imagelist.QuadNode(rast.imagelist,
                 -122.2998046875 + d_lon2, 37.892195547244356 - d_lat2,
                 -122.2119140625 - d_lon, 37.82280243352756 + d_lat));
-        System.out.println(rast.imagelist.QuadNodeLeftAprrox( rast.imagelist, -122.2998046875, 37.892195547244356,
-                -122.2119140625 , 37.82280243352756,(-122.2998046875 + d_lon2 + 122.2119140625 - d_lon) / 1284).deapth);
+        System.out.println(rast.imagelist.Neighbors(-122.2998046875, 37.892195547244356,
+                -122.2119140625 , 37.82280243352756, 256 * 2, 256 * 2 ).get("depth"));
 
     }
 
