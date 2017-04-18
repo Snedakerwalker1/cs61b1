@@ -170,12 +170,13 @@ public class Rasterer {
                     }
                     arrtree = QuadNodeLeftAprrox(this, arrtree.ul_lon, arrtree.ul_lat - 2 * arrtree.d_lat, depth);
                 }
+                temptree = QuadNodeLeftAprrox(this, temptree.ul_lon - 2 * temptree.d_lon, temptree.ul_lat, depth);
             }
             results.put("render_grid", array);
             results.put("raster_ul_lon", leftApprox.ul_lon);
             results.put("raster_ul_lat", leftApprox.ul_lat);
-            results.put("raster_lr_lon", arrtree.lr_lon);
-            results.put("raster_lr_lat", arrtree.lr_lat);
+            results.put("raster_lr_lon", temptree.lr_lon);
+            results.put("raster_lr_lat", temptree.lr_lat);
             results.put("depth", depth);
             results.put("query_success", true);
             return results;
