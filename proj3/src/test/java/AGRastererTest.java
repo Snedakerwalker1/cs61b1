@@ -1,5 +1,7 @@
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AGRastererTest extends AGMapTest {
@@ -19,5 +21,25 @@ public class AGRastererTest extends AGMapTest {
             checkParamsMap("Returned result differed for input: " + p.rasterParams + ".\n",
                     p.rasterResult, studentRasterResult);
         }
+    }
+    @Test
+    public void testMapRaster() throws Exception {
+        Map<String, Double> params = new HashMap<>();
+        params.put("w", 929.0);
+        params.put("h", 944.0);
+        params.put("lrlon", -122.2119140625);
+        params.put("ullon", -122.2591326176749);
+        params.put("ullat", 37.88746545843562);
+        params.put("lrlat", 37.83495035769344);
+        double lon_ddp = (-122.2119140625 - (-122.2591326176749)) / 929;
+        System.out.println(lon_ddp);
+        for (double i : rasterer.depth_DPP) {
+            System.out.println(i);
+        }
+
+        Map<String, Object> results = rasterer.getMapRaster(params);
+        double ne = (double) results.get("raster_lr_lat");
+        Assert.assertTrue(ne == 37.83147657274216);
+
     }
 }
