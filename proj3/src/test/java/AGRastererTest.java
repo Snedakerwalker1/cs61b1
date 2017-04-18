@@ -36,8 +36,8 @@ public class AGRastererTest extends AGMapTest {
         for (double i : rasterer.depth_DPP) {
             System.out.println(i);
         }
-
         Map<String, Object> results = rasterer.getMapRaster(params);
+        System.out.println(results.get("depth"));
         double ne = (double) results.get("raster_lr_lat");
         Assert.assertTrue(ne == 37.83147657274216);
 

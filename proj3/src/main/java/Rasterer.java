@@ -110,6 +110,31 @@ public class Rasterer {
             }
             return qt;
         }
+        QuadTree quadNodeRightAprrox(QuadTree qt, double lrlon1, double lrlat1, int depth) {
+            if (qt.lrlat <= lrlat1 && lrlat1 < qt.ullat && qt.ullon < lrlon1
+                    && lrlon1 <= qt.lrlon && qt.deapth == depth) {
+                return qt;
+            }
+            if (qt.child1 != null) {
+                if (qt.child1.lrlat <= lrlat1 && lrlat1 < qt.child1.ullat
+                        && qt.child1.ullon < lrlon1 && lrlon1 <= qt.child1.lrlon) {
+                    return quadNodeLeftAprrox(qt.child1, lrlon1, lrlat1, depth);
+                }
+                if (qt.child2.lrlat <= lrlat1 && lrlat1 < qt.child2.ullat
+                        && qt.child2.ullon < lrlon1 && lrlon1 <= qt.child2.lrlon) {
+                    return quadNodeLeftAprrox(qt.child2, lrlon1, lrlat1, depth);
+                }
+                if (qt.child3.lrlat <= lrlat1 && lrlat1 < qt.child3.ullat
+                        && qt.child3.ullon < lrlon1 && lrlon1 <= qt.child3.lrlon) {
+                    return quadNodeLeftAprrox(qt.child3, lrlon1, lrlat1, depth);
+                }
+                if (qt.child4.lrlat <= lrlat1 && lrlat1 < qt.child4.ullat
+                        && qt.child4.ullon < lrlon1 && lrlon1 <= qt.child4.lrlon) {
+                    return quadNodeLeftAprrox(qt.child4, lrlon1, lrlat1, depth);
+                }
+            }
+            return qt;
+        }
         int getDepth(double lonDPP) {
             for (int i = 0; i < depth_DPP.length; i += 1) {
                 if (i + 1 == depth_DPP.length) {
@@ -164,14 +189,16 @@ public class Rasterer {
                     temptree = arrtree;
                     for (int j = 0; j < width; j += 1) {
                         array[i][j] = temptree.root + temptree.node + ".png";
-                        temptree = quadNodeLeftAprrox(this,
-                                temptree.ullon + 2 * temptree.dlon, temptree.ullat, depth);
+                        if (j < width - 1) {
+                            temptree = quadNodeLeftAprrox(this,
+                                    temptree.ullon + 2 * temptree.dlon, temptree.ullat, depth);
+                        }
                     }
-                    arrtree = quadNodeLeftAprrox(this, arrtree.ullon,
-                            arrtree.ullat - 2 * arrtree.dlat, depth);
+                    if (i < height - 1) {
+                        arrtree = quadNodeLeftAprrox(this, arrtree.ullon,
+                                arrtree.ullat - 2 * arrtree.dlat, depth);
+                    }
                 }
-                temptree = quadNodeLeftAprrox(this, temptree.ullon - 2 * temptree.dlon,
-                        temptree.ullat, depth);
             }
             results.put("render_grid", array);
             results.put("raster_ul_lon", leftApprox.ullon);
