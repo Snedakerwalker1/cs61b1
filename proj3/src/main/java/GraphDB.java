@@ -114,23 +114,20 @@ public class GraphDB {
             nodeMap.get(id).setName(name1);
         }
     }
-    public void removeNode(long v) {
-        nodeList.remove(v);
-        nodeMap.remove(v);
-    }
 
     private void clean() {
-        ArrayList<Long> removeUs = new ArrayList<>();
+        ArrayList<Long> dontRemoveUs = new ArrayList<>();
         for (int i = 0; i < nodeList.size(); i += 1) {
             long v = nodeList.get(i);
             Node node = getNode(v);
-            if (node.adjacent.isEmpty()) {
-                removeUs.add(v);
+            if (!node.adjacent.isEmpty()) {
+                dontRemoveUs.add(v);
+            } else {
+                nodeMap.remove(v);
             }
         }
-        for (long v : removeUs) {
-            removeNode(v);
-        }
+        nodeList = dontRemoveUs;
+
     }
 
     /** Returns an iterable of all vertex IDs in the graph. */
