@@ -38,7 +38,7 @@ public class GraphBuildingHandler extends DefaultHandler {
     private long activeWay;
     private long activeLNode;
     private final GraphDB g;
-    private List<Long> currentWay;
+    private ArrayList<Long> currentWay;
     private String speed;
     private String name;
     private Boolean isOk = false;
@@ -78,7 +78,6 @@ public class GraphBuildingHandler extends DefaultHandler {
         } else if (qName.equals("way")) {
             /* We encountered a new <way...> tag. */
             activeState = "way";
-            name = "";
             currentWay = new ArrayList<>();
             activeWay = Integer.parseInt(attributes.getValue("id"));
 //            System.out.println("Beginning a way...");
@@ -136,6 +135,9 @@ public class GraphBuildingHandler extends DefaultHandler {
             if (isOk) {
                 g.addEdge(activeWay, currentWay, name, speed);
             }
+            currentWay = new ArrayList<>();
+            name = "";
+            speed = "";
             /* We are done looking at a way. (We finished looking at the nodes, speeds, etc...)*/
             /* Hint1: If you have stored the possible connections for this way, here's your
             chance to actually connect the nodes together if the way is valid. */

@@ -96,17 +96,16 @@ public class GraphDB {
         nodeMap.put(id, node);
         nodeList.add(id);
     }
-    public void addEdge(long edge1, List<Long> ids, String name, String speed) {
-        for (long id1: ids) {
-            Node node1 = nodeMap.get(id1);
+    public void addEdge(long edge1, ArrayList<Long> ids, String name, String speed) {
+        for (int i = 0; i < ids.size(); i += 1) {
+            Node node1 = nodeMap.get(ids.get(i));
             Edge edge = new Edge(edge1);
             edge.setName(name);
             edge.setMaxSpeed(speed);
             node1.edges.add(edge);
-            for (long id2: ids) {
-                if (id2 != id1) {
-                    node1.adjacent.add(id2);
-                }
+            if (i + 1 != ids.size()) {
+                nodeMap.get(ids.get(i + 1)).adjacent.add(ids.get(i));
+                node1.adjacent.add(ids.get(i + 1));
             }
         }
     }
@@ -121,12 +120,16 @@ public class GraphDB {
     }
 
     private void clean() {
+        ArrayList<Long> removeUs = new ArrayList<>();
         for (int i = 0; i < nodeList.size(); i += 1) {
             long v = nodeList.get(i);
             Node node = getNode(v);
             if (node.adjacent.isEmpty()) {
-                removeNode(v);
+                removeUs.add(v);
             }
+        }
+        for (long v : removeUs) {
+            removeNode(v);
         }
     }
 
@@ -168,6 +171,12 @@ public class GraphDB {
         double dist1 = distance2(posMin, lon, lat);
         for (int i = 1; i < nodeList.size(); i += 1) {
             double dist2 = distance2(nodeList.get(i), lon, lat);
+            if (dist1 == 0) {
+                return posMin;
+            }
+            if (dist2 == 0) {
+                return nodeList.get(i);
+            }
             if (dist2 < dist1) {
                 dist1 = dist2;
                 posMin = nodeList.get(i);
