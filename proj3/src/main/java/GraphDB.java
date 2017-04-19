@@ -7,7 +7,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -21,7 +20,6 @@ import java.util.List;
  */
 public class GraphDB {
     private HashMap<Long, Node> nodeMap;
-    private HashMap<Long, HashSet<Edge>> edgeMap;
     private List<Long> nodeList;
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
@@ -31,12 +29,14 @@ public class GraphDB {
         double lat;
         String name = "";
         List<Long> adjacent;
+        List<Edge> edges;
 
         Node(long id1, double lon1, double lat1) {
             this.id = id1;
             this.lon = lon1;
             this.lat = lat1;
             this.adjacent = new ArrayList<>();
+            this.edges = new ArrayList<>();
         }
         void setName(String name1) {
             this.name = name1;
@@ -44,13 +44,11 @@ public class GraphDB {
     }
     private class Edge {
         long edgeId;
-        Node nodes;
         String maxSpeed = "";
         String name = "";
 
-        Edge(long id, Node node) {
+        Edge(long id) {
             this.edgeId = id;
-            this.nodes = node;
         }
         void setMaxSpeed(String speed) {
             this.maxSpeed = speed;
@@ -67,7 +65,6 @@ public class GraphDB {
     public GraphDB(String dbPath) {
         this.nodeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
-        this.edgeMap = new HashMap<>();
         try {
             File inputFile = new File(dbPath);
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -102,19 +99,13 @@ public class GraphDB {
     public void addEdge(long edge1, List<Long> ids, String name, String speed) {
         for (long id1: ids) {
             Node node1 = nodeMap.get(id1);
-            Edge edge = new Edge(edge1, node1);
+            Edge edge = new Edge(edge1);
             edge.setName(name);
             edge.setMaxSpeed(speed);
-            if (edgeMap.containsKey(edge1)) {
-                edgeMap.get(edge1).add(edge);
-            } else {
-                HashSet<Edge> edgeList = new HashSet<>();
-                edgeList.add(edge);
-                edgeMap.put(edge1, edgeList);
-            }
-            for (Edge edg : edgeMap.get(edge1)) {
-                if (edg.nodes.id != id1) {
-                    edg.nodes.adjacent.add(id1);
+            node1.edges.add(edge);
+            for (long id2: ids) {
+                if (id2 != id1) {
+                    node1.adjacent.add(id2);
                 }
             }
         }
