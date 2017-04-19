@@ -208,15 +208,20 @@ public class GraphDB {
         while (que.peek().current.id !=  end) {
             SearchNode node = que.removeMin();
             nodeSet.add(node.current);
+            if(node.current.id == 53055000)  {
+                int i = 0;
+            }
             for (Long nebor: node.current.adjacent) {
                 Node nebhor = getNode(nebor);
                 if (node.last != null) {
                     if (!(nodeSet.contains(nebhor))) {
-                        SearchNode newSearch = new SearchNode(nebhor, distance(node.current.id, nebhor.id), node, end);
+                        SearchNode newSearch = new SearchNode(nebhor,
+                                distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
                         que.insert(newSearch, newSearch.distToEnd);
                     }
                 } else {
-                    SearchNode newSearch = new SearchNode(nebhor, distance(node.current.id, nebhor.id), node, end);
+                    SearchNode newSearch = new SearchNode(nebhor,
+                            distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
                     que.insert(newSearch, newSearch.distToEnd);
                 }
             }
@@ -249,7 +254,7 @@ public class GraphDB {
         @Override
         public int compareTo(SearchNode sn) {
             Double thing = (this.distFromStart + this.distToEnd)
-                    - (sn.distFromStart + this.distToEnd);
+                    - (sn.distFromStart + sn.distToEnd);
             return thing.intValue();
         }
 
