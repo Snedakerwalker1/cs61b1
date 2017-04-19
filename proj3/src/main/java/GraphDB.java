@@ -1,11 +1,15 @@
 import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.*;
+
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -191,7 +195,7 @@ public class GraphDB {
         Node node1 = this.nodeMap.get(v);
         return node1.lat;
     }
-    public LinkedList<Long> ShortDist(double stlon, double stlat,
+    public LinkedList<Long> shortDist(double stlon, double stlat,
                                       double destlon, double destlat) {
         long start = closest(stlon, stlat);
         long end = closest(destlon, destlat);
@@ -207,15 +211,12 @@ public class GraphDB {
             for (Long nebor: node.current.adjacent) {
                 Node nebhor = getNode(nebor);
                 if (node.last != null) {
-                    if (!(node.last.current.equals(nebhor)) && !(nebhor.equals(firstNode))
-                            && !(nodeSet.contains(nebhor))) {
-                        SearchNode newSearch = new SearchNode(nebhor, node.distFromStart +
-                                distance(node.current.id, nebhor.id), node, end);
+                    if (!(nodeSet.contains(nebhor))) {
+                        SearchNode newSearch = new SearchNode(nebhor, distance(node.current.id, nebhor.id), node, end);
                         que.insert(newSearch, newSearch.distToEnd);
                     }
                 } else {
-                    SearchNode newSearch = new SearchNode(nebhor, node.distFromStart +
-                            distance(node.current.id, nebhor.id), node, end);
+                    SearchNode newSearch = new SearchNode(nebhor, distance(node.current.id, nebhor.id), node, end);
                     que.insert(newSearch, newSearch.distToEnd);
                 }
             }
@@ -247,8 +248,8 @@ public class GraphDB {
 
         @Override
         public int compareTo(SearchNode sn) {
-            Double thing = (this.distFromStart + this.distToEnd) -
-                    (sn.distFromStart + this.distToEnd);
+            Double thing = (this.distFromStart + this.distToEnd)
+                    - (sn.distFromStart + this.distToEnd);
             return thing.intValue();
         }
 

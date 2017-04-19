@@ -28,8 +28,6 @@ public class Rasterer {
         QuadTree child2;
         QuadTree child3;
         QuadTree child4;
-        double[] dislon = new double[9];
-        double[] dislat = new double[9];
         double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
             ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
 
@@ -48,8 +46,6 @@ public class Rasterer {
             this.root = root;
             this.dlon = (lrlon - ullon) / 2;
             this.dlat = (ullat - lrlat) / 2;
-            this.dislon[deapth] = dlon;
-            this.dislat[deapth] = dlat;
             child1 = new QuadTree(root, height + 1, node * 10 + 1, deapth + 1,
                     ullon, ullat, lrlon - dlon, lrlat + dlat);
             child2 = new QuadTree(root, height + 1, node * 10 + 2, deapth + 1,
@@ -99,11 +95,8 @@ public class Rasterer {
             return 0;
         }
         int getlength(double start, double dist, double end) {
-            int i = 1;
-            while (start < end) {
-                start += dist;
-                i += 1;
-            } return i;
+            int posoutput = (int) ((int) 1 + Math.abs(Math.ceil((end - start) / dist)));
+            return posoutput;
         }
         Map<String, Object> neighbors(double ullon1, double ullat1,
                              double lrlon1, double lrlat1, double w, double h) {

@@ -1,4 +1,3 @@
-import java.util.HashSet;
 import java.util.LinkedList;
 /**
  * This class provides a shortestPath method for finding routes between two points
@@ -15,7 +14,7 @@ public class Router {
      */
     public static LinkedList<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                                 double destlon, double destlat) {
-        return g.ShortDist(stlon, stlat, destlon, destlat);
+        return g.shortDist(stlon, stlat, destlon, destlat);
 
     }
 }
