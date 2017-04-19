@@ -16,8 +16,6 @@ public class AGRastererTest extends AGMapTest {
     public void testGetMapRaster() throws Exception {
         for (TestParameters p : params) {
             Map<String, Object> studentRasterResult = rasterer.getMapRaster(p.rasterParams);
-            System.out.println(p.rasterResult);
-            System.out.println(studentRasterResult);
             checkParamsMap("Returned result differed for input: " + p.rasterParams + ".\n",
                     p.rasterResult, studentRasterResult);
         }
@@ -32,12 +30,7 @@ public class AGRastererTest extends AGMapTest {
         params.put("ullat", 37.88746545843562);
         params.put("lrlat", 37.83495035769344);
         double lon_ddp = (-122.2119140625 - (-122.2591326176749)) / 929;
-        System.out.println(lon_ddp);
-        for (double i : rasterer.depth_DPP) {
-            System.out.println(i);
-        }
         Map<String, Object> results = rasterer.getMapRaster(params);
-        System.out.println(results.get("depth"));
         double ne = (double) results.get("raster_lr_lat");
         Assert.assertTrue(ne == 37.83147657274216);
 
