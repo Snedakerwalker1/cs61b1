@@ -138,6 +138,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             currentWay = new ArrayList<>();
             name = "";
             speed = "";
+            isOk = false;
             /* We are done looking at a way. (We finished looking at the nodes, speeds, etc...)*/
             /* Hint1: If you have stored the possible connections for this way, here's your
             chance to actually connect the nodes together if the way is valid. */
