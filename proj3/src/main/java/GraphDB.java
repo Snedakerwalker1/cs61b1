@@ -5,9 +5,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -23,7 +21,7 @@ public class GraphDB {
     private List<Long> nodeList;
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
-    private class Node {
+    class Node {
         long id;
         double lon;
         double lat;
@@ -42,7 +40,7 @@ public class GraphDB {
             this.name = name1;
         }
     }
-    private class Edge {
+    class Edge {
         long edgeId;
         String maxSpeed = "";
         String name = "";
@@ -192,5 +190,67 @@ public class GraphDB {
     double lat(long v) {
         Node node1 = this.nodeMap.get(v);
         return node1.lat;
+    }
+    public LinkedList<Long> ShortDist(double stlon, double stlat,
+                                      double destlon, double destlat) {
+        long start = closest(stlon, stlat);
+        long end = closest(destlon, destlat);
+        Node startNode = getNode(start);
+        HashSet<Node> nodeSet = new HashSet<>();
+        ArrayHeap<SearchNode> que = new ArrayHeap<>();
+        SearchNode firstNode = new SearchNode(startNode, 0, null, end);
+        LinkedList<Long> solution = new LinkedList<>();
+        que.insert(firstNode, firstNode.distToEnd);
+        while (que.peek().current.id !=  end) {
+            SearchNode node = que.removeMin();
+            nodeSet.add(node.current);
+            for (Long nebor: node.current.adjacent) {
+                Node nebhor = getNode(nebor);
+                if (node.last != null) {
+                    if (!(node.last.current.equals(nebhor)) && !(nebhor.equals(firstNode))
+                            && !(nodeSet.contains(nebhor))) {
+                        SearchNode newSearch = new SearchNode(nebhor, node.distFromStart +
+                                distance(node.current.id, nebhor.id), node, end);
+                        que.insert(newSearch, newSearch.distToEnd);
+                    }
+                } else {
+                    SearchNode newSearch = new SearchNode(nebhor, node.distFromStart +
+                            distance(node.current.id, nebhor.id), node, end);
+                    que.insert(newSearch, newSearch.distToEnd);
+                }
+            }
+        }
+        SearchNode nodeSolution = que.removeMin();
+        while (nodeSolution.last != null) {
+            solution.add(0, nodeSolution.current.id);
+            nodeSolution = nodeSolution.last;
+        }
+        solution.add(0, nodeSolution.current.id);
+        return solution;
+    }
+
+
+
+
+    private class SearchNode implements Comparable<SearchNode> {
+        private double distToEnd;
+        private Node current;
+        private SearchNode last;
+        private double distFromStart;
+
+        SearchNode(Node node, double dist, SearchNode l, long end) {
+            this.distFromStart = dist;
+            this.last = l;
+            this.current = node;
+            this.distToEnd = distance(node.id, end);
+        }
+
+        @Override
+        public int compareTo(SearchNode sn) {
+            Double thing = (this.distFromStart + this.distToEnd) -
+                    (sn.distFromStart + this.distToEnd);
+            return thing.intValue();
+        }
+
     }
 }

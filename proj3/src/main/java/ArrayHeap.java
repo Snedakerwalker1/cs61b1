@@ -100,6 +100,9 @@ public class ArrayHeap<T> {
      */
     private void swim(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
+        if (this.contents[1] == null) {
+            return;
+        }
         validateSinkSwimArg(index);
         if (parentIndex(index) == 0) {
             return;
@@ -117,6 +120,9 @@ public class ArrayHeap<T> {
      */
     private void sink(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
+        if (this.contents [1] == null) {
+            return;
+        }
         validateSinkSwimArg(index);
         if (leftIndex(index) > size) {
             return;

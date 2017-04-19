@@ -1,5 +1,5 @@
+import java.util.HashSet;
 import java.util.LinkedList;
-
 /**
  * This class provides a shortestPath method for finding routes between two points
  * on the map. Start by using Dijkstra's, and if your code isn't fast enough for your
@@ -15,13 +15,7 @@ public class Router {
      */
     public static LinkedList<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                                 double destlon, double destlat) {
-        long start = g.closest(stlon, stlat);
-        long end = g.closest(destlon, destlat);
-        return new LinkedList<Long>();
+        return g.ShortDist(stlon, stlat, destlon, destlat);
+
     }
-
-
-
-
-
 }
