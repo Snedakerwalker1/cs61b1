@@ -15,8 +15,11 @@ public class Router {
      */
     public static LinkedList<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                                 double destlon, double destlat) {
+        long start = g.closest(stlon, stlat);
+        long end = g.closest(destlon, destlat);
         return new LinkedList<Long>();
     }
+
 
 
 
