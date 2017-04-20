@@ -1,6 +1,7 @@
 import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
@@ -199,28 +200,25 @@ public class GraphDB {
         long start = closest(stlon, stlat);
         long end = closest(destlon, destlat);
         Node startNode = getNode(start);
-        HashMap<Node, SearchNode> nodeSearchMap = new HashMap<>();
+        HashMap<Node, SearchNode> nodeSearchNodeHashMap = new HashMap<>();
         ArrayHeap<SearchNode> que = new ArrayHeap<>();
         SearchNode firstNode = new SearchNode(startNode, 0, null, end);
         LinkedList<Long> solution = new LinkedList<>();
         que.insert(firstNode, firstNode.dist);
         while (que.peek().current.id !=  end) {
             SearchNode node = que.removeMin();
-            nodeSearchMap.put(node.current, node);
-            if (node.current.id == 53055000)  {
-                int i = 0;
-            }
+            nodeSearchNodeHashMap.put(node.current, node);
             for (Long nebor: node.current.adjacent) {
                 Node nebhor = getNode(nebor);
                 SearchNode newSearch = new SearchNode(nebhor,
                         distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
                 if (node.last != null) {
-                    if (!(nodeMap.containsKey(nebhor))) {
+                    if (!(nodeSearchNodeHashMap.containsKey(nebhor))) {
                         que.insert(newSearch, newSearch.dist);
                     } else {
-                        SearchNode oldNode = nodeSearchMap.get(nebhor);
+                        SearchNode oldNode = nodeSearchNodeHashMap.get(nebhor);
                         if (newSearch.dist < oldNode.dist) {
-                            nodeMap.remove(nebhor);
+                            nodeSearchNodeHashMap.remove(nebhor);
                             que.insert(newSearch, newSearch.dist);
                         }
                     }
