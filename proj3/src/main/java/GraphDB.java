@@ -200,29 +200,33 @@ public class GraphDB {
         long start = closest(stlon, stlat);
         long end = closest(destlon, destlat);
         Node startNode = getNode(start);
-        HashSet<Node> nodeSet = new HashSet<>();
+        HashMap<Node, SearchNode> nodeMap = new HashMap<>();
         ArrayHeap<SearchNode> que = new ArrayHeap<>();
         SearchNode firstNode = new SearchNode(startNode, 0, null, end);
         LinkedList<Long> solution = new LinkedList<>();
-        que.insert(firstNode, firstNode.distToEnd);
+        que.insert(firstNode, firstNode.dist);
         while (que.peek().current.id !=  end) {
             SearchNode node = que.removeMin();
-            nodeSet.add(node.current);
+            nodeMap.put(node.current, node);
             if(node.current.id == 53055000)  {
                 int i = 0;
             }
             for (Long nebor: node.current.adjacent) {
                 Node nebhor = getNode(nebor);
+                SearchNode newSearch = new SearchNode(nebhor,
+                        distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
                 if (node.last != null) {
-                    if (!(nodeSet.contains(nebhor))) {
-                        SearchNode newSearch = new SearchNode(nebhor,
-                                distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
-                        que.insert(newSearch, newSearch.distToEnd);
+                    if (!(nodeMap.containsKey(nebhor))) {
+                        que.insert(newSearch, newSearch.dist);
+                    } else {
+                        SearchNode oldNode = nodeMap.get(nebhor);
+                        if (newSearch.dist < oldNode.dist) {
+                            nodeMap.remove(nebhor);
+                            que.insert(newSearch, newSearch.dist);
+                        }
                     }
                 } else {
-                    SearchNode newSearch = new SearchNode(nebhor,
-                            distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
-                    que.insert(newSearch, newSearch.distToEnd);
+                    que.insert(newSearch, newSearch.dist);
                 }
             }
         }
@@ -243,12 +247,14 @@ public class GraphDB {
         private Node current;
         private SearchNode last;
         private double distFromStart;
+        private double dist;
 
         SearchNode(Node node, double dist, SearchNode l, long end) {
             this.distFromStart = dist;
             this.last = l;
             this.current = node;
             this.distToEnd = distance(node.id, end);
+            this.dist = distFromStart + distToEnd;
         }
 
         @Override
