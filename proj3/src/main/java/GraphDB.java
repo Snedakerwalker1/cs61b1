@@ -215,12 +215,12 @@ public class GraphDB {
                 if (node.last != null) {
                     if (!(nodeSearchNodeHashMap.containsKey(nebhor))) {
                         que.insert(newSearch, newSearch.dist);
-                    } else {
-                        SearchNode oldNode = nodeSearchNodeHashMap.get(nebhor);
-                        if (newSearch.dist < oldNode.dist) {
-                            nodeSearchNodeHashMap.remove(nebhor);
-                            que.insert(newSearch, newSearch.dist);
-                        }
+                   // } else {
+                     //   SearchNode oldNode = nodeSearchNodeHashMap.get(nebhor);
+                       // if (newSearch.dist < oldNode.dist) {
+                         //   nodeSearchNodeHashMap.remove(nebhor);
+                           // que.insert(newSearch, newSearch.dist);
+                       // }
                     }
                 } else {
                     que.insert(newSearch, newSearch.dist);
