@@ -2,10 +2,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.ArrayList;
+import java.util.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -200,6 +197,7 @@ public class GraphDB {
         long start = closest(stlon, stlat);
         long end = closest(destlon, destlat);
         Node startNode = getNode(start);
+        HashSet<Node> nodeHashSet = new HashSet<>();
         HashMap<Node, SearchNode> nodeSearchNodeHashMap = new HashMap<>();
         ArrayHeap<SearchNode> que = new ArrayHeap<>();
         SearchNode firstNode = new SearchNode(startNode, 0, null, end);
@@ -207,13 +205,14 @@ public class GraphDB {
         que.insert(firstNode, firstNode.dist);
         while (que.peek().current.id !=  end) {
             SearchNode node = que.removeMin();
+            nodeHashSet.add(node.current);
             nodeSearchNodeHashMap.put(node.current, node);
             for (Long nebor: node.current.adjacent) {
                 Node nebhor = getNode(nebor);
                 SearchNode newSearch = new SearchNode(nebhor,
                         distance(node.current.id, nebhor.id) + node.distFromStart, node, end);
                 if (node.last != null) {
-                    if (!(nodeSearchNodeHashMap.containsKey(nebhor))) {
+                    if (!(nodeHashSet.contains(nebhor))) {
                         que.insert(newSearch, newSearch.dist);
                    // } else {
                      //   SearchNode oldNode = nodeSearchNodeHashMap.get(nebhor);
