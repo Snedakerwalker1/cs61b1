@@ -1,7 +1,6 @@
 import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
@@ -200,15 +199,15 @@ public class GraphDB {
         long start = closest(stlon, stlat);
         long end = closest(destlon, destlat);
         Node startNode = getNode(start);
-        HashMap<Node, SearchNode> nodeMap = new HashMap<>();
+        HashMap<Node, SearchNode> nodeSearchMap = new HashMap<>();
         ArrayHeap<SearchNode> que = new ArrayHeap<>();
         SearchNode firstNode = new SearchNode(startNode, 0, null, end);
         LinkedList<Long> solution = new LinkedList<>();
         que.insert(firstNode, firstNode.dist);
         while (que.peek().current.id !=  end) {
             SearchNode node = que.removeMin();
-            nodeMap.put(node.current, node);
-            if(node.current.id == 53055000)  {
+            nodeSearchMap.put(node.current, node);
+            if (node.current.id == 53055000)  {
                 int i = 0;
             }
             for (Long nebor: node.current.adjacent) {
@@ -219,7 +218,7 @@ public class GraphDB {
                     if (!(nodeMap.containsKey(nebhor))) {
                         que.insert(newSearch, newSearch.dist);
                     } else {
-                        SearchNode oldNode = nodeMap.get(nebhor);
+                        SearchNode oldNode = nodeSearchMap.get(nebhor);
                         if (newSearch.dist < oldNode.dist) {
                             nodeMap.remove(nebhor);
                             que.insert(newSearch, newSearch.dist);
