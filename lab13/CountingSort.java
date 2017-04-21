@@ -72,8 +72,9 @@ public class CountingSort {
         for (int i: toSort) {
             counts[i - min] += 1;
         }
+
         int [] sorted = new int[toSort.length];
-        int k = min;
+        int k = 0;
         for (int i = 0; i < counts.length; i += 1) {
             for (int j = 0; j < counts[i]; j += 1, k += 1) {
                 sorted[k] = i;
