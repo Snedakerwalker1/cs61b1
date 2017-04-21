@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.HashSet;
+
 /**
  * Class with 2 ways of doing Counting sort, one naive way and one "better" way
  * 
@@ -52,7 +55,30 @@ public class CountingSort {
      * @param toSort int array that will be sorted
     **/
     public static int[] betterCountingSort(int[] toSort) {
-        //TODO make it work with arrays containing negative numbers.
-        return null;
+        HashMap<Integer, Integer> countingMap = new HashMap<>();
+        int max = Integer.MIN_VALUE;
+        for (int i: toSort) {
+            if (i > max) {
+                max = i;
+            }
+        }
+        int min = Integer.MAX_VALUE;
+        for (int i: toSort) {
+            if (i < min) {
+                min = i;
+            }
+        }
+        int[] counts = new int[-min + max + 1];
+        for (int i: toSort) {
+            counts[i - min] += 1;
+        }
+        int [] sorted = new int[toSort.length];
+        int k = min;
+        for (int i = 0; i < counts.length; i += 1) {
+            for (int j = 0; j < counts[i]; j += 1, k += 1) {
+                sorted[k] = i;
+            }
+        }
+        return sorted;
     }
 }
