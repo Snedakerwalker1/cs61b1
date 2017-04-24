@@ -18,7 +18,7 @@ public class SeamCarver {
 
     public Picture picture() {
         // current picture
-        return this.picture;
+        return new Picture(this.picture);
     }
     public int width() {
         // width of current picture
@@ -141,7 +141,7 @@ public class SeamCarver {
                 ArrayList nodeArr = new ArrayList();
                 //ArrayList tempArr = new ArrayList();
                 for (int j = 0; j < node.arrayList.size(); j += 1) {
-                    nodeArr.add(j, node.arrayList.get(j));//tempArr.add(j, node.arrayList.get(j));
+                    nodeArr.add(j, node.arrayList.get(j)); //tempArr.add(j, node.arrayList.get(j));
                 }
                 nodeArr.add(node.arrayList.size(), i);
                 //tempArr.add(node.arrayList.size(), minVal);
