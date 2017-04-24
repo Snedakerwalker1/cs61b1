@@ -1,6 +1,8 @@
 import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.MinPQ;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 
 /**
  * Created by wsnedaker on 4/23/2017.
@@ -119,41 +121,43 @@ public class SeamCarver {
     }
     public int[] findVerticalSeam() {
         // sequence of indices for vertical seam
-        MinPQ<SearchNode> minPQ = new MinPQ<>();
+        HashMap<String, SearchNode> searchMap = new HashMap<>();
+        PriorityQueue<SearchNode> minPQ= new PriorityQueue<>();
         int[] verticleSeam = new int[this.height];
         for (int i = 0; i < this.width; i += 1) {
             ArrayList<Integer> retHeight = new ArrayList<>();
             retHeight.add(0, i);
             SearchNode sn = new SearchNode(retHeight, pathCost(retHeight));
-            minPQ.insert(sn);
+            searchMap.put("0," + i, sn);
+            minPQ.add(sn);
         }
         while (true) {
-            if (minPQ.min().arrayList.size() == this.height) {
+            if (minPQ.peek().arrayList.size() == this.height) {
                 break;
             }
-            SearchNode node = minPQ.delMin();
-            //int minVal = neighbors(node.arrayList.get(node.arrayList.size() - 1),
-            //        node.arrayList.size() - 1)[0];
-            //int i = minNeighbor(node.arrayList.get
-            // (node.arrayList.size() - 1), node.arrayList.size() - 1);
+            SearchNode node = minPQ.poll();
             for (int i : neighbors(node.arrayList.get(node.arrayList.size() - 1),
                     node.arrayList.size() - 1)) {
                 ArrayList nodeArr = new ArrayList();
-                //ArrayList tempArr = new ArrayList();
                 for (int j = 0; j < node.arrayList.size(); j += 1) {
-                    nodeArr.add(j, node.arrayList.get(j)); //tempArr.add(j, node.arrayList.get(j));
+                    nodeArr.add(j, node.arrayList.get(j));
                 }
                 nodeArr.add(node.arrayList.size(), i);
-                //tempArr.add(node.arrayList.size(), minVal);
-                //if (pathCost(tempArr) > pathCost(nodeArr)) {
-                //   minVal = i;
-                //}
-                //ArrayList nodeArr = new ArrayList();
-                SearchNode sn = new SearchNode(nodeArr, pathCost(nodeArr));
-                minPQ.insert(sn);
+                if (searchMap.containsKey(node.arrayList.size() + "," + i)) {
+                    if (searchMap.get(node.arrayList.size() + "," + i).distance < pathCost(nodeArr)) {
+                        minPQ.remove(searchMap.get(node.arrayList.size() + "," + i));
+                        SearchNode sn = new SearchNode(nodeArr, pathCost(nodeArr));
+                        minPQ.add(sn);
+                        searchMap.put(node.arrayList.size() + "," + i, sn);
+                    }
+                } else {
+                    SearchNode sn = new SearchNode(nodeArr, pathCost(nodeArr));
+                    minPQ.add(sn);
+                    searchMap.put(node.arrayList.size() + "," + i, sn);
+                }
             }
         }
-        ArrayList nodeArr = minPQ.delMin().arrayList;
+        ArrayList nodeArr = minPQ.poll().arrayList;
         for (int i = 0; i < nodeArr.size(); i += 1) {
             verticleSeam[i] = (int) nodeArr.get(i);
         }
