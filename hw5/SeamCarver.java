@@ -1,16 +1,14 @@
-import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.Picture;
-
+import edu.princeton.cs.algs4.MinPQ;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by wsnedaker on 4/23/2017.
  */
 public class SeamCarver {
-    Picture picture;
-    int width;
-    int height;
+    private Picture picture;
+    private int width;
+    private int height;
 
     public SeamCarver(Picture picture) {
         this.picture = picture;
@@ -20,7 +18,8 @@ public class SeamCarver {
 
     public Picture picture() {
         // current picture
-        return this.picture;
+        Picture pic = new Picture(this.picture);
+        return pic;
     }
     public int width() {
         // width of current picture
@@ -42,19 +41,31 @@ public class SeamCarver {
         double gy;
         double by;
         if (x == 0) {
-            rx = this.picture.get(x + 1, y).getRed()
-                    - this.picture.get(width - 1, y).getRed();
-            gx = this.picture.get(x + 1, y).getGreen()
-                    - this.picture.get(width - 1, y).getGreen();
-            bx = this.picture.get(x + 1, y).getBlue()
-                    - this.picture.get(width - 1, y).getBlue();
+            if (this.width - 1 != 0) {
+                rx = this.picture.get(x + 1, y).getRed()
+                        - this.picture.get(width - 1, y).getRed();
+                gx = this.picture.get(x + 1, y).getGreen()
+                        - this.picture.get(width - 1, y).getGreen();
+                bx = this.picture.get(x + 1, y).getBlue()
+                        - this.picture.get(width - 1, y).getBlue();
+            } else {
+                rx = 0;
+                gx = 0;
+                bx = 0;
+            }
         } else if (x == width - 1) {
-            rx = this.picture.get(0, y).getRed()
-                    - this.picture.get(x - 1, y).getRed();
-            gx = this.picture.get(0, y).getGreen()
-                    - this.picture.get(x - 1, y).getGreen();
-            bx = this.picture.get(0, y).getBlue()
-                    - this.picture.get(x - 1, y).getBlue();
+            if (this.width - 1 != 0) {
+                rx = this.picture.get(0, y).getRed()
+                        - this.picture.get(x - 1, y).getRed();
+                gx = this.picture.get(0, y).getGreen()
+                        - this.picture.get(x - 1, y).getGreen();
+                bx = this.picture.get(0, y).getBlue()
+                        - this.picture.get(x - 1, y).getBlue();
+            } else {
+                rx = 0;
+                gx = 0;
+                bx = 0;
+            }
         } else {
             rx = this.picture.get(x + 1, y).getRed()
                     - this.picture.get(x - 1, y).getRed();
@@ -64,19 +75,31 @@ public class SeamCarver {
                     - this.picture.get(x - 1, y).getBlue();
         }
         if (y == 0) {
-            ry = this.picture.get(x, y + 1).getRed()
-                    - this.picture.get(x, height - 1).getRed();
-            gy = this.picture.get(x, y + 1).getGreen()
-                    - this.picture.get(x, height - 1).getGreen();
-            by = this.picture.get(x, y + 1).getBlue()
-                    - this.picture.get(x, height - 1).getBlue();
+            if (this.height - 1 != 0) {
+                ry = this.picture.get(x, y + 1).getRed()
+                        - this.picture.get(x, height - 1).getRed();
+                gy = this.picture.get(x, y + 1).getGreen()
+                        - this.picture.get(x, height - 1).getGreen();
+                by = this.picture.get(x, y + 1).getBlue()
+                        - this.picture.get(x, height - 1).getBlue();
+            } else {
+                ry = 0;
+                gy = 0;
+                by = 0;
+            }
         } else if (y == height - 1) {
-            ry = this.picture.get(x, 0).getRed()
-                    - this.picture.get(x, y - 1).getRed();
-            gy = this.picture.get(x, 0).getGreen()
-                    - this.picture.get(x, y - 1).getGreen();
-            by = this.picture.get(x, 0).getBlue()
-                    - this.picture.get(x, y - 1).getBlue();
+            if (this.height - 1 != 0) {
+                ry = this.picture.get(x, 0).getRed()
+                        - this.picture.get(x, y - 1).getRed();
+                gy = this.picture.get(x, 0).getGreen()
+                        - this.picture.get(x, y - 1).getGreen();
+                by = this.picture.get(x, 0).getBlue()
+                        - this.picture.get(x, y - 1).getBlue();
+            } else {
+                ry = 0;
+                gy = 0;
+                by = 0;
+            }
         } else {
             ry = this.picture.get(x, y + 1).getRed()
                     - this.picture.get(x, y - 1).getRed();
@@ -127,8 +150,9 @@ public class SeamCarver {
             }
         }
         ArrayList nodeArr = minPQ.delMin().arrayList;
-        for (int i = 0; i < nodeArr.size(); i += 1)
+        for (int i = 0; i < nodeArr.size(); i += 1) {
             verticleSeam[i] = (int) nodeArr.get(i);
+        }
         return verticleSeam;
     }
     private class SearchNode implements Comparable<SearchNode> {
