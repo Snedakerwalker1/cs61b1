@@ -18,8 +18,7 @@ public class SeamCarver {
 
     public Picture picture() {
         // current picture
-        Picture pic = new Picture(this.picture);
-        return pic;
+        return this.picture;
     }
     public int width() {
         // width of current picture
@@ -34,12 +33,7 @@ public class SeamCarver {
         if (x < 0 || x >= width || y < 0 || y >= height) {
             throw new java.lang.IndexOutOfBoundsException("Not within length");
         }
-        double rx;
-        double gx;
-        double bx;
-        double ry;
-        double gy;
-        double by;
+        double rx, gx, bx, ry, gy, by;
         if (x == 0) {
             if (this.width - 1 != 0) {
                 rx = this.picture.get(x + 1, y).getRed()
@@ -138,16 +132,31 @@ public class SeamCarver {
                 break;
             }
             SearchNode node = minPQ.delMin();
+            int minVal = neighbors(node.arrayList.get(node.arrayList.size() - 1),
+                    node.arrayList.size() - 1)[0];
+            //int i = minNeighbor(node.arrayList.get
+            // (node.arrayList.size() - 1), node.arrayList.size() - 1);
             for (int i : neighbors(node.arrayList.get(node.arrayList.size() - 1),
                     node.arrayList.size() - 1)) {
                 ArrayList nodeArr = new ArrayList();
+                ArrayList tempArr = new ArrayList();
                 for (int j = 0; j < node.arrayList.size(); j += 1) {
                     nodeArr.add(j, node.arrayList.get(j));
+                    tempArr.add(j, node.arrayList.get(j));
                 }
                 nodeArr.add(node.arrayList.size(), i);
-                SearchNode sn = new SearchNode(nodeArr, pathCost(nodeArr));
-                minPQ.insert(sn);
+                tempArr.add(node.arrayList.size(), minVal);
+                if (pathCost(tempArr) > pathCost(nodeArr)) {
+                    minVal = i;
+                }
             }
+            ArrayList nodeArr = new ArrayList();
+            for (int j = 0; j < node.arrayList.size(); j += 1) {
+                nodeArr.add(j, node.arrayList.get(j));
+            }
+            nodeArr.add(node.arrayList.size(), minVal);
+            SearchNode sn = new SearchNode(nodeArr, pathCost(nodeArr));
+            minPQ.insert(sn);
         }
         ArrayList nodeArr = minPQ.delMin().arrayList;
         for (int i = 0; i < nodeArr.size(); i += 1) {
