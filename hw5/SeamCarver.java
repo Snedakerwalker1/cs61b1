@@ -1,6 +1,6 @@
 import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.MinPQ;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -123,11 +123,9 @@ public class SeamCarver {
     public int[] findVerticalSeam() {
         // sequence of indices for vertical seam
         MinPQ<SearchNode> minPQ = new MinPQ<>();
-        int[] verticleSeam = new int[this.height];
         for (int i = 0; i < this.width; i += 1) {
-            ArrayList<Integer> retHeight = new ArrayList<>();
-            retHeight.add(0, i);
-            SearchNode sn = new SearchNode(i, 0, energy(i, 0), null);
+            int[] verticleSeam = new int[this.height];
+            SearchNode sn = new SearchNode(i, 0, energy(i, 0), null, verticleSeam);
             this.visited[0][i] = true;
             minPQ.insert(sn);
         }
@@ -140,31 +138,34 @@ public class SeamCarver {
                 if (!this.visited[node.currentY + 1][i]) {
                     SearchNode sn = new SearchNode(i, node.currentY + 1,
                             energy(i, node.currentY + 1)
-                            + node.distance, node);
+                            + node.distance, node, node.array);
                     minPQ.insert(sn);
                     this.visited[node.currentY + 1][i] = true;
                 }
             }
         }
         SearchNode node = minPQ.min();
-        while (node.last != null) {
-            verticleSeam[node.currentY] = node.currentX;
-            node = node.last;
-        }
-        verticleSeam[0] = node.currentX;
+        //while (node.last != null) {
+          //  verticleSeam[node.currentY] = node.currentX;
+            //node = node.last;
+        //}
+        //verticleSeam[0] = node.currentX;
         this.visited = new boolean[height][width];
-        return verticleSeam;
+        return node.array;
     }
     private class SearchNode implements Comparable<SearchNode> {
         int currentX;
         int currentY;
         SearchNode last;
         double distance;
-        SearchNode(int x, int y, double dist, SearchNode last) {
+        int[] array;
+        SearchNode(int x, int y, double dist, SearchNode last, int[] arr) {
             this.currentX = x;
             this.currentY = y;
             this.distance = dist;
             this.last = last;
+            this.array = Arrays.copyOf(arr, height);
+            this.array[y] = x;
         }
         @Override
         public int compareTo(SearchNode sn) {
