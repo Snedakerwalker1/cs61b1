@@ -127,43 +127,44 @@ public class SeamCarver {
         for (int i = 0; i < this.width; i += 1) {
             ArrayList<Integer> retHeight = new ArrayList<>();
             retHeight.add(0, i);
-            SearchNode sn = new SearchNode(retHeight, energy(i, 0));
+            SearchNode sn = new SearchNode(i, 0, energy(i, 0), null);
             this.visited[0][i] = true;
             minPQ.insert(sn);
         }
         while (true) {
-            if (minPQ.min().arrayList.size() == this.height) {
+            if (minPQ.min().currentY + 1 == this.height) {
                 break;
             }
             SearchNode node = minPQ.delMin();
-            for (int i : neighbors(node.arrayList.get(node.arrayList.size() - 1),
-                    node.arrayList.size() - 1)) {
-                ArrayList nodeArr = new ArrayList();
-                for (int j = 0; j < node.arrayList.size(); j += 1) {
-                    nodeArr.add(j, node.arrayList.get(j));
-                }
-                nodeArr.add(node.arrayList.size(), i);
-                if (!this.visited[node.arrayList.size()][i]) {
-                    SearchNode sn = new SearchNode(nodeArr,
-                            energy(i, node.arrayList.size()) + node.distance);
+            for (int i : neighbors(node.currentX, node.currentY)) {
+                if (!this.visited[node.currentY + 1][i]) {
+                    SearchNode sn = new SearchNode(i, node.currentY + 1,
+                            energy(i, node.currentY + 1)
+                            + node.distance, node);
                     minPQ.insert(sn);
-                    this.visited[node.arrayList.size()][i] = true;
+                    this.visited[node.currentY + 1][i] = true;
                 }
             }
         }
-        ArrayList nodeArr = minPQ.delMin().arrayList;
-        for (int i = 0; i < nodeArr.size(); i += 1) {
-            verticleSeam[i] = (int) nodeArr.get(i);
+        SearchNode node = minPQ.min();
+        while (node.last != null) {
+            verticleSeam[node.currentY] = node.currentX;
+            node = node.last;
         }
+        verticleSeam[0] = node.currentX;
         this.visited = new boolean[height][width];
         return verticleSeam;
     }
     private class SearchNode implements Comparable<SearchNode> {
-        ArrayList<Integer> arrayList;
+        int currentX;
+        int currentY;
+        SearchNode last;
         double distance;
-        SearchNode(ArrayList<Integer> arr, double dist) {
-            this.arrayList = arr;
+        SearchNode(int x, int y, double dist, SearchNode last) {
+            this.currentX = x;
+            this.currentY = y;
             this.distance = dist;
+            this.last = last;
         }
         @Override
         public int compareTo(SearchNode sn) {
@@ -171,13 +172,7 @@ public class SeamCarver {
             return comp.intValue();
         }
     }
-    private double pathCost(ArrayList<Integer> path) {
-        double ret = 0;
-        for (int i = 0; i < path.size(); i += 1) {
-            ret += energy(path.get(i), i);
-        }
-        return ret;
-    }
+
     private int[] neighbors(int x, int y) {
         if (y == this.height - 1) {
             return null;
