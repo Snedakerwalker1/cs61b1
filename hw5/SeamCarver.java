@@ -122,10 +122,10 @@ public class SeamCarver {
     }
     public int[] findVerticalSeam() {
         // sequence of indices for vertical seam
+        int[] verticleSeam = new int[this.height];
         MinPQ<SearchNode> minPQ = new MinPQ<>();
         for (int i = 0; i < this.width; i += 1) {
-            int[] verticleSeam = new int[this.height];
-            SearchNode sn = new SearchNode(i, 0, energy(i, 0), null, verticleSeam);
+            SearchNode sn = new SearchNode(i, 0, energy(i, 0), null);
             this.visited[0][i] = true;
             minPQ.insert(sn);
         }
@@ -138,34 +138,32 @@ public class SeamCarver {
                 if (!this.visited[node.currentY + 1][i]) {
                     SearchNode sn = new SearchNode(i, node.currentY + 1,
                             energy(i, node.currentY + 1)
-                            + node.distance, node, node.array);
+                            + node.distance, node);
                     minPQ.insert(sn);
                     this.visited[node.currentY + 1][i] = true;
                 }
             }
         }
         SearchNode node = minPQ.min();
-        //while (node.last != null) {
-          //  verticleSeam[node.currentY] = node.currentX;
-            //node = node.last;
-        //}
-        //verticleSeam[0] = node.currentX;
+        while (node.last != null) {
+            verticleSeam[node.currentY] = node.currentX;
+            node = node.last;
+        }
+        verticleSeam[0] = node.currentX;
         this.visited = new boolean[height][width];
-        return node.array;
+        return verticleSeam;
     }
     private class SearchNode implements Comparable<SearchNode> {
         int currentX;
         int currentY;
         SearchNode last;
         double distance;
-        int[] array;
-        SearchNode(int x, int y, double dist, SearchNode last, int[] arr) {
+
+        SearchNode(int x, int y, double dist, SearchNode last) {
             this.currentX = x;
             this.currentY = y;
             this.distance = dist;
             this.last = last;
-            this.array = Arrays.copyOf(arr, height);
-            this.array[y] = x;
         }
         @Override
         public int compareTo(SearchNode sn) {
