@@ -11,11 +11,13 @@ public class SeamCarver {
     private Picture picture;
     private int width;
     private int height;
+    private boolean[][] visited;
 
     public SeamCarver(Picture picture) {
         this.picture = new Picture(picture);
         this.height = picture.height();
         this.width = picture.width();
+        visited = new boolean[width][height];
     }
 
     public Picture picture() {
@@ -121,14 +123,13 @@ public class SeamCarver {
     }
     public int[] findVerticalSeam() {
         // sequence of indices for vertical seam
-        HashMap<String, SearchNode> searchMap = new HashMap<>();
         MinPQ<SearchNode> minPQ= new MinPQ<>();
         int[] verticleSeam = new int[this.height];
         for (int i = 0; i < this.width; i += 1) {
             ArrayList<Integer> retHeight = new ArrayList<>();
             retHeight.add(0, i);
-            SearchNode sn = new SearchNode(retHeight, pathCost(retHeight));
-            searchMap.put("0," + i, sn);
+            SearchNode sn = new SearchNode(retHeight, energy(i,0));
+            this.visited[i][0] = true;
             minPQ.insert(sn);
         }
         while (true) {
@@ -143,10 +144,10 @@ public class SeamCarver {
                     nodeArr.add(j, node.arrayList.get(j));
                 }
                 nodeArr.add(node.arrayList.size(), i);
-                if (!searchMap.containsKey(node.arrayList.size() + "," + i)) {
-                    SearchNode sn = new SearchNode(nodeArr, pathCost(nodeArr));
+                if (!this.visited[i][node.arrayList.size()]) {
+                    SearchNode sn = new SearchNode(nodeArr, energy(i,node.arrayList.size()) + node.distance);
                     minPQ.insert(sn);
-                    searchMap.put(node.arrayList.size() + "," + i, sn);
+                    this.visited[i][node.arrayList.size()] = true;
                 }
             }
         }
