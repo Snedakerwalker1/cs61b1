@@ -226,7 +226,7 @@ public class SeamCarver {
                 throw new java.lang.IllegalArgumentException("not correct size");
             }
         }
-        this.picture = SeamRemover.removeHorizontalSeam(this.picture, seam);
+        this.picture = SeamRemover.removeVerticalSeam(this.picture, seam);
         this.height = this.picture.height();
         this.width = this.picture.width();
     }
