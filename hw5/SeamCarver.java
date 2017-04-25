@@ -1,7 +1,5 @@
 import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.MinPQ;
-import java.util.Arrays;
-
 
 /**
  * Created by wsnedaker on 4/23/2017.
@@ -110,7 +108,6 @@ public class SeamCarver {
 
     public int[] findHorizontalSeam() {
         // sequence of indices for horizontal seam
-        int[] retWidth = new int[this.width];
         Picture pic = new Picture(this.height, this.width);
         for (int i = 0; i < this.width; i += 1) {
             for (int j = 0; j < this.height; j += 1) {
