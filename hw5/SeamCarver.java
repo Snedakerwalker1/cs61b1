@@ -1,8 +1,7 @@
 import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.MinPQ;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+
 
 /**
  * Created by wsnedaker on 4/23/2017.
@@ -123,12 +122,12 @@ public class SeamCarver {
     }
     public int[] findVerticalSeam() {
         // sequence of indices for vertical seam
-        MinPQ<SearchNode> minPQ= new MinPQ<>();
+        MinPQ<SearchNode> minPQ = new MinPQ<>();
         int[] verticleSeam = new int[this.height];
         for (int i = 0; i < this.width; i += 1) {
             ArrayList<Integer> retHeight = new ArrayList<>();
             retHeight.add(0, i);
-            SearchNode sn = new SearchNode(retHeight, energy(i,0));
+            SearchNode sn = new SearchNode(retHeight, energy(i, 0));
             this.visited[i][0] = true;
             minPQ.insert(sn);
         }
@@ -145,7 +144,8 @@ public class SeamCarver {
                 }
                 nodeArr.add(node.arrayList.size(), i);
                 if (!this.visited[i][node.arrayList.size()]) {
-                    SearchNode sn = new SearchNode(nodeArr, energy(i,node.arrayList.size()) + node.distance);
+                    SearchNode sn = new SearchNode(nodeArr,
+                            energy(i, node.arrayList.size()) + node.distance);
                     minPQ.insert(sn);
                     this.visited[i][node.arrayList.size()] = true;
                 }
@@ -155,6 +155,7 @@ public class SeamCarver {
         for (int i = 0; i < nodeArr.size(); i += 1) {
             verticleSeam[i] = (int) nodeArr.get(i);
         }
+        this.visited = new boolean[width][height];
         return verticleSeam;
     }
     private class SearchNode implements Comparable<SearchNode> {
