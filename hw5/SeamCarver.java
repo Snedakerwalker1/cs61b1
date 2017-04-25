@@ -16,7 +16,7 @@ public class SeamCarver {
         this.picture = new Picture(picture);
         this.height = picture.height();
         this.width = picture.width();
-        visited = new boolean[width][height];
+        visited = new boolean[height][width];
     }
 
     public Picture picture() {
@@ -128,7 +128,7 @@ public class SeamCarver {
             ArrayList<Integer> retHeight = new ArrayList<>();
             retHeight.add(0, i);
             SearchNode sn = new SearchNode(retHeight, energy(i, 0));
-            this.visited[i][0] = true;
+            this.visited[0][i] = true;
             minPQ.insert(sn);
         }
         while (true) {
@@ -143,11 +143,11 @@ public class SeamCarver {
                     nodeArr.add(j, node.arrayList.get(j));
                 }
                 nodeArr.add(node.arrayList.size(), i);
-                if (!this.visited[i][node.arrayList.size()]) {
+                if (!this.visited[node.arrayList.size()][i]) {
                     SearchNode sn = new SearchNode(nodeArr,
                             energy(i, node.arrayList.size()) + node.distance);
                     minPQ.insert(sn);
-                    this.visited[i][node.arrayList.size()] = true;
+                    this.visited[node.arrayList.size()][i] = true;
                 }
             }
         }
@@ -155,7 +155,7 @@ public class SeamCarver {
         for (int i = 0; i < nodeArr.size(); i += 1) {
             verticleSeam[i] = (int) nodeArr.get(i);
         }
-        this.visited = new boolean[width][height];
+        this.visited = new boolean[height][width];
         return verticleSeam;
     }
     private class SearchNode implements Comparable<SearchNode> {
