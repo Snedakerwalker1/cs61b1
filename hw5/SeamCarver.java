@@ -183,7 +183,10 @@ public class SeamCarver {
             return null;
         }
         int[] rets;
-        if (x == 0) {
+        if (0 == this.width - 1) {
+            rets = new int[1];
+            rets[0] = 0;
+        } else if (x == 0) {
             rets = new int[2];
             rets[0] = 0;
             rets[1] = 1;
